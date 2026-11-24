@@ -1,0 +1,1354 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sugarless Shenanigans — Chocolate Reimagined</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<style>
+:root{
+ --bg:#100704;
+ --panel:#1b0c07;
+ --gold:#e7b978;
+ --gold2:#bd8247;
+ --cream:#fff1dc;
+ --muted:#bca58c;
+ --line:rgba(231,185,120,.2);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ background:var(--bg);
+ color:var(--cream);
+ font-family:'DM Sans',sans-serif;
+ overflow-x:hidden;
+}
+button{font:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:#e7b978;color:#180a04}
+
+/* BACKGROUND */
+
+.background{
+ position:fixed;
+ inset:0;
+ z-index:-3;
+ background:
+ radial-gradient(ellipse at 75% 25%,#67331c55,transparent 40%),
+ radial-gradient(ellipse at 10% 75%,#44201555,transparent 40%),
+ #100704;
+}
+.noise{
+ position:fixed;
+ inset:0;
+ z-index:50;
+ opacity:.035;
+ pointer-events:none;
+ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+/* LOADING SCREEN */
+
+.loader{
+ position:fixed;
+ inset:0;
+ z-index:200;
+ background:#100704;
+ display:grid;
+ place-items:center;
+ transition:opacity .8s,visibility .8s;
+}
+.loader.done{opacity:0;visibility:hidden}
+.loader-inner{text-align:center}
+.loader-logo{
+ width:150px;
+ height:100px;
+ object-fit:contain;
+}
+.loader-line{
+ width:180px;
+ height:2px;
+ margin:25px auto 0;
+ background:#ffffff15;
+ overflow:hidden;
+}
+.loader-line:after{
+ content:"";
+ display:block;
+ width:40%;
+ height:100%;
+ background:var(--gold);
+ animation:loading 1.1s infinite ease-in-out;
+}
+@keyframes loading{
+ from{transform:translateX(-100%)}
+ to{transform:translateX(350%)}
+}
+
+/* NAVIGATION */
+
+nav{
+ position:fixed;
+ top:0;
+ width:100%;
+ height:88px;
+ z-index:40;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:0 7%;
+ background:rgba(16,7,4,.72);
+ backdrop-filter:blur(25px);
+ border-bottom:1px solid #ffffff12;
+ transition:.3s;
+}
+nav.scrolled{
+ height:70px;
+ background:rgba(16,7,4,.94);
+}
+.brand-logo{
+ width:155px;
+ height:75px;
+ object-fit:contain;
+}
+.navlinks{
+ display:flex;
+ align-items:center;
+ gap:35px;
+}
+.navlinks a{
+ font-size:10px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ color:#e8d8c4;
+ transition:.3s;
+}
+.navlinks a:hover{color:var(--gold)}
+.nav-cta{
+ padding:12px 20px;
+ border:1px solid var(--line);
+ border-radius:30px;
+ color:var(--gold)!important;
+}
+.menu-toggle{
+ display:none;
+ background:none;
+ border:0;
+ color:var(--cream);
+ font-size:26px;
+}
+
+/* HERO */
+
+.hero{
+ min-height:850px;
+ padding:145px 7% 80px;
+ display:grid;
+ grid-template-columns:.85fr 1.25fr;
+ align-items:center;
+ gap:25px;
+ position:relative;
+}
+.hero-copy{position:relative;z-index:3}
+.eyebrow{
+ color:var(--gold);
+ text-transform:uppercase;
+ letter-spacing:5px;
+ font-size:10px;
+ font-weight:700;
+}
+.hero h1{
+ font:600 clamp(60px,7.4vw,108px)/.98 'Playfair Display',serif;
+ letter-spacing:-4px;
+ margin:28px 0;
+}
+.hero h1 em{
+ color:var(--gold);
+ font-weight:500;
+}
+.hero-description{
+ max-width:420px;
+ color:var(--muted);
+ line-height:1.9;
+ font-size:14px;
+}
+.hero-buttons{
+ display:flex;
+ gap:13px;
+ flex-wrap:wrap;
+ margin-top:34px;
+}
+.btn{
+ border:1px solid var(--gold);
+ border-radius:50px;
+ padding:17px 26px;
+ background:linear-gradient(120deg,#f2d09b,#b77a42);
+ color:#251007;
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:1.7px;
+ cursor:pointer;
+ box-shadow:0 10px 35px #b77a4230;
+ transition:transform .3s,box-shadow .3s;
+}
+.btn:hover{
+ transform:translateY(-5px);
+ box-shadow:0 15px 45px #d49c5b60;
+}
+.btn.secondary{
+ background:transparent;
+ color:var(--cream);
+ border-color:#ffffff35;
+ box-shadow:none;
+}
+.scroll-hint{
+ margin-top:45px;
+ color:#a58b70;
+ font-size:9px;
+ letter-spacing:3px;
+}
+.scroll-hint span{
+ color:var(--gold);
+ margin-right:8px;
+}
+
+/* 3D MODEL AREA */
+
+.model-area{
+ height:650px;
+ position:relative;
+ display:grid;
+ place-items:center;
+ min-width:0;
+}
+#chocolateCanvas{
+ width:100%;
+ height:100%;
+ display:block;
+ cursor:grab;
+ touch-action:none;
+ position:relative;
+ z-index:2;
+}
+#chocolateCanvas:active{cursor:grabbing}
+.model-halo{
+ position:absolute;
+ width:420px;
+ height:420px;
+ border-radius:50%;
+ background:#a44b1d40;
+ filter:blur(100px);
+ pointer-events:none;
+}
+.model-ring{
+ position:absolute;
+ width:420px;
+ height:420px;
+ border:1px solid #e4b57519;
+ border-radius:50%;
+ animation:orbit 30s linear infinite;
+ pointer-events:none;
+}
+.model-ring:before{
+ content:"";
+ position:absolute;
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ background:var(--gold);
+ box-shadow:0 0 20px var(--gold);
+ top:50px;
+ left:40px;
+}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.model-label{
+ position:absolute;
+ bottom:12px;
+ width:100%;
+ text-align:center;
+ font-size:9px;
+ letter-spacing:3px;
+ color:#d4b58c;
+ pointer-events:none;
+ z-index:4;
+}
+.model-label strong{color:var(--gold)}
+
+/* FLOATING PARTICLES */
+
+.dust{
+ position:absolute;
+ inset:0;
+ pointer-events:none;
+ overflow:hidden;
+}
+.dust span{
+ position:absolute;
+ width:3px;
+ height:3px;
+ border-radius:50%;
+ background:#e8c58c;
+ box-shadow:0 0 12px #e8c58c;
+ animation:floatDust linear infinite;
+}
+@keyframes floatDust{
+ 0%{transform:translateY(40px);opacity:0}
+ 20%{opacity:.8}
+ 80%{opacity:.5}
+ 100%{transform:translateY(-500px);opacity:0}
+}
+
+/* SECTION SHARED */
+
+.section{
+ padding:130px 8%;
+ position:relative;
+}
+.section-head{
+ text-align:center;
+ max-width:700px;
+ margin:0 auto 65px;
+}
+.section-head h2{
+ font:600 clamp(42px,6vw,76px)/1.08 'Playfair Display',serif;
+ margin:20px 0;
+}
+.section-head h2 em{color:var(--gold)}
+.section-head p{
+ color:var(--muted);
+ line-height:1.9;
+ font-size:14px;
+}
+
+/* GLASS CARDS */
+
+.cards{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:22px;
+}
+.card{
+ padding:38px;
+ min-height:275px;
+ border:1px solid #e6b87525;
+ border-radius:25px;
+ background:linear-gradient(145deg,#ffffff12,#ffffff03);
+ backdrop-filter:blur(25px);
+ box-shadow:inset 0 1px #ffffff15,0 20px 50px #0003;
+ transition:.45s cubic-bezier(.2,.8,.2,1);
+ position:relative;
+ overflow:hidden;
+}
+.card:before{
+ content:"";
+ position:absolute;
+ width:200px;
+ height:200px;
+ top:-130px;
+ right:-100px;
+ background:#e6b87520;
+ filter:blur(60px);
+}
+.card:hover{
+ transform:translateY(-12px) scale(1.015);
+ border-color:#e6b87590;
+ box-shadow:0 25px 60px #0005,0 0 30px #e6b87510;
+}
+.card-number{
+ font:italic 34px Georgia;
+ color:var(--gold);
+}
+.card h3{
+ font:600 28px 'Playfair Display',serif;
+ margin:25px 0 13px;
+}
+.card p{
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.9;
+}
+
+/* INGREDIENT SECTION */
+
+.ingredient-layout{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:65px;
+ align-items:center;
+}
+.ingredient-copy h2{
+ font:600 clamp(45px,6vw,72px)/1.1 'Playfair Display',serif;
+ margin:22px 0;
+}
+.ingredient-copy h2 em{color:var(--gold)}
+.ingredient-copy p{
+ color:var(--muted);
+ line-height:1.9;
+ font-size:14px;
+ max-width:500px;
+}
+.ingredient-visual{
+ height:430px;
+ position:relative;
+ display:grid;
+ place-items:center;
+ border:1px solid #e5b67530;
+ border-radius:30px;
+ overflow:hidden;
+ background:
+ radial-gradient(circle at center,#75371d,#291006 55%,#140805);
+}
+.ingredient-visual:before{
+ content:"";
+ position:absolute;
+ width:260px;
+ height:260px;
+ border:1px solid #e5b67535;
+ border-radius:50%;
+ animation:orbit 30s linear infinite;
+}
+.ingredient-visual:after{
+ content:"";
+ position:absolute;
+ width:340px;
+ height:340px;
+ border:1px solid #e5b67518;
+ border-radius:50%;
+}
+.ingredient-icon{
+ font-size:110px;
+ filter:drop-shadow(0 20px 30px #0008);
+ animation:ingredientFloat 4s ease-in-out infinite;
+ z-index:2;
+}
+@keyframes ingredientFloat{
+ 0%,100%{transform:translateY(-10px) rotate(-5deg)}
+ 50%{transform:translateY(10px) rotate(5deg)}
+}
+.ingredient-facts{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ margin:28px 0;
+}
+.fact{
+ padding:13px;
+ border-bottom:1px solid #ffffff20;
+ font-size:12px;
+ color:#e6d3bc;
+}
+.fact span{color:var(--gold);margin-right:8px}
+
+/* NUTRIENTS */
+
+.nutrient-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:14px;
+}
+.nutrient{
+ padding:25px 15px;
+ text-align:center;
+ border:1px solid #ffffff18;
+ background:#ffffff07;
+ border-radius:17px;
+ backdrop-filter:blur(15px);
+ transition:.3s;
+}
+.nutrient:hover{
+ background:#e6b87513;
+ border-color:#e6b87560;
+ transform:translateY(-5px);
+}
+.nutrient b{
+ display:block;
+ font:600 25px 'Playfair Display',serif;
+ color:var(--gold);
+ margin-bottom:7px;
+}
+.nutrient small{
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1px;
+}
+
+/* FINAL SECTION */
+
+.final{
+ text-align:center;
+ padding:150px 7%;
+ background:radial-gradient(ellipse at center,#51251455,transparent 65%);
+}
+.final h2{
+ font:600 clamp(48px,7vw,90px)/1.1 'Playfair Display',serif;
+ margin:25px 0;
+}
+.final h2 em{color:var(--gold)}
+.final p{
+ color:var(--muted);
+ line-height:1.9;
+}
+
+/* FOOTER */
+
+footer{
+ padding:75px 7% 35px;
+ text-align:center;
+ background:#0b0402;
+ border-top:1px solid #ffffff18;
+}
+.footer-logo{
+ width:175px;
+ height:105px;
+ object-fit:contain;
+}
+footer h3{
+ color:var(--gold);
+ font:600 26px 'Playfair Display',serif;
+ letter-spacing:3px;
+ margin-top:12px;
+}
+footer p{
+ color:#a99075;
+ font-size:11px;
+ margin-top:12px;
+ letter-spacing:1px;
+}
+.footer-credit{
+ margin-top:35px;
+ padding-top:25px;
+ border-top:1px solid #ffffff15;
+ color:var(--gold);
+ font-size:11px;
+ letter-spacing:2px;
+}
+
+/* MODAL */
+
+.modal{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ display:none;
+ justify-content:center;
+ align-items:center;
+ padding:20px;
+ background:#080301db;
+ backdrop-filter:blur(22px);
+}
+.modal.open{display:flex}
+.modal-box{
+ width:min(850px,100%);
+ max-height:85vh;
+ overflow:auto;
+ border-radius:27px;
+ padding:40px;
+ background:linear-gradient(145deg,#482417f5,#160905fa);
+ border:1px solid #e6b87570;
+ box-shadow:0 30px 100px #000b;
+ animation:modalIn .45s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes modalIn{
+ from{opacity:0;transform:translateY(35px) scale(.96)}
+ to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:25px;
+}
+.modal-head h2{
+ font:600 36px 'Playfair Display',serif;
+}
+.close{
+ width:43px;
+ height:43px;
+ border-radius:50%;
+ border:1px solid #ffffff35;
+ background:#ffffff12;
+ color:white;
+ font-size:23px;
+ cursor:pointer;
+}
+.group{
+ padding:23px 0;
+ border-bottom:1px solid #ffffff20;
+}
+.group h3{
+ font:600 23px 'Playfair Display',serif;
+ color:var(--gold);
+ margin-bottom:15px;
+}
+.tags{display:flex;flex-wrap:wrap;gap:9px}
+.tag{
+ padding:10px 14px;
+ border:1px solid #ffffff25;
+ border-radius:30px;
+ background:#ffffff0c;
+ color:#f1ddc3;
+ font-size:12px;
+}
+.modal-note{
+ color:#bda68e;
+ font-size:11px;
+ line-height:1.8;
+ margin-top:25px;
+}
+
+/* SCROLL REVEALS */
+
+.reveal{
+ opacity:0;
+ transform:translateY(35px);
+ transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.visible{
+ opacity:1;
+ transform:translateY(0);
+}
+.delay1{transition-delay:.12s}
+.delay2{transition-delay:.24s}
+
+/* PROGRESS BAR */
+
+.progress{
+ position:fixed;
+ top:0;
+ left:0;
+ height:2px;
+ width:0;
+ background:var(--gold);
+ z-index:100;
+ box-shadow:0 0 10px var(--gold);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+ .hero{grid-template-columns:1fr;padding-top:135px}
+ .model-area{height:530px}
+ .cards{grid-template-columns:1fr}
+ .ingredient-layout{grid-template-columns:1fr}
+ .nutrient-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ nav{height:75px;padding:0 5%}
+ .brand-logo{width:110px}
+ .menu-toggle{display:block}
+ .navlinks{
+  display:none;
+  position:absolute;
+  top:75px;
+  left:0;
+  width:100%;
+  padding:25px;
+  background:#160905f5;
+  flex-direction:column;
+  align-items:flex-start;
+ }
+ .navlinks.open{display:flex}
+ .hero{padding:120px 6% 60px}
+ .hero h1{font-size:62px}
+ .model-area{height:390px}
+ .section{padding:90px 6%}
+ .ingredient-visual{height:330px}
+ .ingredient-facts{grid-template-columns:1fr 1fr}
+ .modal-box{padding:23px}
+ .modal-head h2{font-size:27px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+  scroll-behavior:auto!important;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="noise"></div>
+<div class="progress" id="progress"></div>
+
+<!-- LOADING SCREEN -->
+<div class="loader" id="loader">
+ <div class="loader-inner">
+  <img src="logo.png" class="loader-logo" alt="Sugarless Shenanigans">
+  <div class="eyebrow">CHOCOLATE REIMAGINED</div>
+  <div class="loader-line"></div>
+ </div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+ <a href="#top">
+  <img src="logo.png" class="brand-logo" alt="Sugarless Shenanigans logo">
+ </a>
+
+ <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+
+ <div class="navlinks" id="navlinks">
+  <a href="#story">Our story</a>
+  <a href="#ingredients">Ingredients</a>
+  <a href="#nutrition">Nutrition</a>
+  <a href="#ingredients" class="nav-cta" onclick="openIngredients()">Explore ingredients ↗</a>
+ </div>
+</nav>
+
+<!-- HERO -->
+<main id="top">
+<section class="hero">
+
+ <div class="hero-copy">
+  <div class="eyebrow">A LITTLE MISCHIEF. A LOT OF CHOCOLATE.</div>
+
+  <h1>
+   Chocolate.<br>
+   Made <em>different.</em>
+  </h1>
+
+  <p class="hero-description">
+   Introducing Sugarless Shenanigans.
+   A bold new chocolate concept combining rich cacao,
+   creamy textures, berries, seeds and thoughtfully
+   selected ingredients.
+  </p>
+
+  <div class="hero-buttons">
+   <button class="btn" onclick="openIngredients()">
+    DISCOVER INGREDIENTS ↗
+   </button>
+   <a class="btn secondary" href="#story">
+    EXPLORE THE BRAND
+   </a>
+  </div>
+
+  <div class="scroll-hint">
+   <span>↓</span> SCROLL TO EXPERIENCE SOMETHING DIFFERENT
+  </div>
+ </div>
+
+ <!-- REAL THREE.JS MODEL -->
+ <div class="model-area">
+  <div class="model-halo"></div>
+  <div class="model-ring"></div>
+  <div class="dust" id="dust"></div>
+  <canvas id="chocolateCanvas"></canvas>
+  <div class="model-label">
+   <strong>INTERACTIVE 3D</strong> · DRAG TO ROTATE · SCROLL TO ZOOM
+  </div>
+ </div>
+
+</section>
+
+<!-- BRAND STORY -->
+<section class="section" id="story">
+
+ <div class="section-head reveal">
+  <div class="eyebrow">THE SHENANIGANS IDEA</div>
+  <h2>Not your <em>ordinary</em> chocolate.</h2>
+  <p>
+   We believe chocolate can be exciting, creative
+   and made with carefully considered ingredients.
+   This is a new way to imagine a classic favourite.
+  </p>
+ </div>
+
+ <div class="cards">
+
+  <article class="card reveal">
+   <div class="card-number">01</div>
+   <h3>Rich cacao</h3>
+   <p>
+    A deep, rich chocolate foundation made with
+    cocoa butter and naturally high-flavanol cacao.
+   </p>
+  </article>
+
+  <article class="card reveal delay1">
+   <div class="card-number">02</div>
+   <h3>Superfood creativity</h3>
+   <p>
+    Seeds, berries, nuts and plant-based ingredients
+    bring interesting textures and flavours.
+   </p>
+  </article>
+
+  <article class="card reveal delay2">
+   <div class="card-number">03</div>
+   <h3>Thoughtful nutrition</h3>
+   <p>
+    Exploring fibre, naturally occurring nutrients,
+    vitamins and minerals in a chocolate concept.
+   </p>
+  </article>
+
+ </div>
+</section>
+
+<!-- INGREDIENTS -->
+<section class="section" id="ingredients">
+
+ <div class="ingredient-layout">
+
+  <div class="ingredient-copy reveal">
+   <div class="eyebrow">THE INGREDIENT COLLECTION</div>
+
+   <h2>Good things.<br><em>Great chocolate.</em></h2>
+
+   <p>
+    Every ingredient has a reason to be considered.
+    From organic cocoa butter to chia seeds and
+    freeze-dried blueberries, our concept explores
+    a colourful collection of plant ingredients.
+   </p>
+
+   <div class="ingredient-facts">
+    <div class="fact"><span>✦</span> Organic cacao</div>
+    <div class="fact"><span>✦</span> Chia seeds</div>
+    <div class="fact"><span>✦</span> Flaxseed</div>
+    <div class="fact"><span>✦</span> Hemp hearts</div>
+    <div class="fact"><span>✦</span> Blueberries</div>
+    <div class="fact"><span>✦</span> Natural vanilla</div>
+   </div>
+
+   <button class="btn" onclick="openIngredients()">
+    VIEW THE FULL INGREDIENT LIST ↗
+   </button>
+  </div>
+
+  <div class="ingredient-visual reveal delay1">
+   <div class="ingredient-icon">🍫</div>
+  </div>
+
+ </div>
+</section>
+
+<!-- NUTRITION -->
+<section class="section" id="nutrition">
+
+ <div class="section-head reveal">
+  <div class="eyebrow">THE NUTRITION CONCEPT</div>
+  <h2>More than <em>just cacao.</em></h2>
+  <p>
+   The proposed formulation explores a range of
+   essential nutrients and naturally occurring
+   plant compounds.
+  </p>
+ </div>
+
+ <div class="nutrient-grid">
+
+  <div class="nutrient reveal"><b>A–K</b><small>VITAMINS</small></div>
+  <div class="nutrient reveal delay1"><b>10+</b><small>MINERALS</small></div>
+  <div class="nutrient reveal delay2"><b>OMEGA</b><small>FATTY ACIDS</small></div>
+  <div class="nutrient reveal"><b>FIBRE</b><small>PLANT FIBRE</small></div>
+  <div class="nutrient reveal delay1"><b>ALA</b><small>OMEGA-3</small></div>
+  <div class="nutrient reveal delay2"><b>PLANT</b><small>PROTEIN</small></div>
+  <div class="nutrient reveal"><b>COCOA</b><small>FLAVANOLS</small></div>
+  <div class="nutrient reveal delay1"><b>BERRY</b><small>POLYPHENOLS</small></div>
+
+ </div>
+</section>
+
+<!-- FINAL BRAND MOMENT -->
+<section class="final">
+ <div class="eyebrow reveal">WELCOME TO THE SHENANIGANS</div>
+
+ <h2 class="reveal">
+  A little less <em>ordinary.</em><br>
+  A lot more interesting.
+ </h2>
+
+ <p class="reveal">Chocolate with character.</p>
+
+ <br><br>
+
+ <button class="btn reveal" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  BACK TO THE TOP ↑
+ </button>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+ <img src="logo.png" class="footer-logo" alt="Sugarless Shenanigans logo">
+
+ <h3>SUGARLESS SHENANIGANS</h3>
+ <p>Chocolate with character.</p>
+ <p>Made for curious chocolate lovers.</p>
+
+ <div class="footer-credit">
+  WEBSITE BY MOHAMMAD HASSAN
+  <p>© 2026 · ALL RIGHTS RESERVED</p>
+ </div>
+</footer>
+
+<!-- INGREDIENT MODAL -->
+<div class="modal" id="ingredientModal" onclick="outsideClose(event)">
+ <div class="modal-box">
+
+  <div class="modal-head">
+   <h2>Inside the chocolate.</h2>
+   <button class="close" onclick="closeIngredients()">×</button>
+  </div>
+
+  <div class="group">
+   <h3>01 · Chocolate foundation</h3>
+   <div class="tags">
+    <span class="tag">Organic cocoa butter</span>
+    <span class="tag">High-flavanol cacao</span>
+    <span class="tag">Almond butter</span>
+    <span class="tag">Natural vanilla</span>
+    <span class="tag">Sunflower lecithin</span>
+    <span class="tag">Stevia</span>
+    <span class="tag">Sea salt</span>
+    <span class="tag">Cinnamon</span>
+   </div>
+  </div>
+
+  <div class="group">
+   <h3>02 · Seeds, nuts and fibre</h3>
+   <div class="tags">
+    <span class="tag">Ground flaxseed</span>
+    <span class="tag">Chia seeds</span>
+    <span class="tag">Hemp hearts</span>
+    <span class="tag">Pumpkin seeds</span>
+    <span class="tag">Pistachios</span>
+    <span class="tag">Inulin fibre</span>
+    <span class="tag">Acacia fibre</span>
+    <span class="tag">Psyllium fibre</span>
+   </div>
+  </div>
+
+  <div class="group">
+   <h3>03 · Berries and superfoods</h3>
+   <div class="tags">
+    <span class="tag">Blueberries</span>
+    <span class="tag">Strawberries</span>
+    <span class="tag">Raspberry powder</span>
+    <span class="tag">Beetroot powder</span>
+    <span class="tag">Matcha</span>
+    <span class="tag">Turmeric</span>
+    <span class="tag">Ginger</span>
+    <span class="tag">Pumpkin protein</span>
+   </div>
+  </div>
+
+  <div class="group">
+   <h3>04 · Vitamins</h3>
+   <div class="tags">
+    <span class="tag">Vitamin A</span>
+    <span class="tag">B1</span><span class="tag">B2</span>
+    <span class="tag">B3</span><span class="tag">B5</span>
+    <span class="tag">B6</span><span class="tag">B7</span>
+    <span class="tag">B9</span><span class="tag">B12</span>
+    <span class="tag">Vitamin C</span>
+    <span class="tag">Vitamin D</span>
+    <span class="tag">Vitamin E</span>
+    <span class="tag">Vitamin K1</span>
+   </div>
+  </div>
+
+  <div class="group">
+   <h3>05 · Essential minerals</h3>
+   <div class="tags">
+    <span class="tag">Magnesium</span>
+    <span class="tag">Calcium</span>
+    <span class="tag">Iron</span>
+    <span class="tag">Zinc</span>
+    <span class="tag">Potassium</span>
+    <span class="tag">Selenium</span>
+    <span class="tag">Iodine</span>
+    <span class="tag">Copper</span>
+    <span class="tag">Manganese</span>
+    <span class="tag">Phosphorus</span>
+   </div>
+  </div>
+
+  <div class="group">
+   <h3>06 · Naturally occurring nutrients</h3>
+   <div class="tags">
+    <span class="tag">Omega-3 ALA</span>
+    <span class="tag">Omega-6</span>
+    <span class="tag">Plant protein</span>
+    <span class="tag">Dietary fibre</span>
+    <span class="tag">Cocoa flavanols</span>
+    <span class="tag">Anthocyanins</span>
+    <span class="tag">Polyphenols</span>
+   </div>
+  </div>
+
+  <p class="modal-note">
+   This is a proposed ingredient collection, not a verified final
+   recipe. Optional ingredients are alternatives and would not
+   necessarily all be used together. Almonds and pistachios are
+   allergens. Actual vitamin and mineral quantities, safety and
+   nutritional claims require professional formulation and testing.
+  </p>
+
+  <br>
+  <button class="btn" onclick="closeIngredients()">CLOSE INGREDIENTS</button>
+
+ </div>
+</div>
+
+<script>
+/* LOADER */
+window.addEventListener('load',()=>{
+ setTimeout(()=>{
+  document.getElementById('loader').classList.add('done');
+ },800);
+});
+
+/* NAVIGATION */
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+ navbar.classList.toggle('scrolled',window.scrollY>50);
+
+ const max=document.documentElement.scrollHeight-innerHeight;
+ document.getElementById('progress').style.width=
+  (max>0?window.scrollY/max*100:0)+'%';
+});
+
+document.getElementById('menuToggle').addEventListener('click',()=>{
+ document.getElementById('navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a=>{
+ a.addEventListener('click',()=>{
+  document.getElementById('navlinks').classList.remove('open');
+ });
+});
+
+/* INGREDIENT POPUP */
+function openIngredients(){
+ document.getElementById('ingredientModal').classList.add('open');
+ document.body.style.overflow='hidden';
+}
+function closeIngredients(){
+ document.getElementById('ingredientModal').classList.remove('open');
+ document.body.style.overflow='';
+}
+function outsideClose(e){
+ if(e.target.id==='ingredientModal')closeIngredients();
+}
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape')closeIngredients();
+});
+
+/* REVEAL ANIMATIONS */
+const revealObserver=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{
+  if(entry.isIntersecting){
+   entry.target.classList.add('visible');
+   revealObserver.unobserve(entry.target);
+  }
+ });
+},{threshold:.12});
+
+document.querySelectorAll('.reveal').forEach(el=>{
+ revealObserver.observe(el);
+});
+
+/* GOLDEN DUST */
+const dust=document.getElementById('dust');
+for(let i=0;i<28;i++){
+ const particle=document.createElement('span');
+ particle.style.left=Math.random()*100+'%';
+ particle.style.bottom=Math.random()*30+'%';
+ particle.style.animationDuration=(5+Math.random()*9)+'s';
+ particle.style.animationDelay=(-Math.random()*10)+'s';
+ particle.style.opacity=.2+Math.random()*.6;
+ dust.appendChild(particle);
+}
+</script>
+
+<!-- THREE.JS 3D CHOCOLATE -->
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import {RoundedBoxGeometry} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js';
+
+const canvas=document.getElementById('chocolateCanvas');
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(34,1,.1,100);
+camera.position.set(5,4.5,7.5);
+
+const renderer=new THREE.WebGLRenderer({
+ canvas,
+ alpha:true,
+ antialias:true,
+ powerPreference:'high-performance'
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.25;
+
+/* REAL DRAG, ROTATE AND ZOOM */
+const controls=new OrbitControls(camera,canvas);
+controls.enableDamping=true;
+controls.dampingFactor=.065;
+controls.enablePan=false;
+controls.minDistance=4.5;
+controls.maxDistance=12;
+controls.autoRotate=true;
+controls.autoRotateSpeed=.65;
+controls.target.set(0,0,0);
+
+/* CINEMATIC LIGHTING */
+scene.add(new THREE.HemisphereLight(0xffe6c7,0x1a0703,2));
+
+const key=new THREE.DirectionalLight(0xffd5a2,5);
+key.position.set(5,8,6);
+scene.add(key);
+
+const fill=new THREE.PointLight(0xffa05b,35,25);
+fill.position.set(-5,3,5);
+scene.add(fill);
+
+const rim=new THREE.PointLight(0xffe7c9,30,25);
+rim.position.set(2,4,-6);
+scene.add(rim);
+
+const front=new THREE.PointLight(0xffffff,12,20);
+front.position.set(0,2,7);
+scene.add(front);
+
+/* CHOCOLATE MATERIALS */
+const darkChocolate=new THREE.MeshPhysicalMaterial({
+ color:0x35150c,
+ roughness:.19,
+ metalness:0,
+ clearcoat:1,
+ clearcoatRoughness:.08
+});
+
+const chocolateMaterial=new THREE.MeshPhysicalMaterial({
+ color:0x592919,
+ roughness:.16,
+ metalness:.015,
+ clearcoat:1,
+ clearcoatRoughness:.055,
+ specularIntensity:1
+});
+
+const dripMaterial=new THREE.MeshPhysicalMaterial({
+ color:0x632a18,
+ roughness:.105,
+ clearcoat:1,
+ clearcoatRoughness:.035
+});
+
+/* MAIN CHOCOLATE GROUP */
+const bar=new THREE.Group();
+scene.add(bar);
+
+/* SOLID BAR BODY */
+const base=new THREE.Mesh(
+ new RoundedBoxGeometry(4.8,.48,3.05,8,.17),
+ darkChocolate
+);
+base.position.y=0;
+bar.add(base);
+
+/* INDIVIDUAL CHOCOLATE SEGMENTS */
+const segmentGeometry=new RoundedBoxGeometry(1.09,.28,.92,8,.12);
+
+const segmentPositions=[];
+
+for(let x=0;x<4;x++){
+ for(let z=0;z<3;z++){
+  const segment=new THREE.Mesh(segmentGeometry,chocolateMaterial);
+  segment.position.set(
+   -1.635+x*1.09,
+   .34,
+   -.98+z*.98
+  );
+  segment.castShadow=true;
+  segment.receiveShadow=true;
+  bar.add(segment);
+  segmentPositions.push(segment.position.clone());
+ }
+}
+
+/* REALISTIC SMALL EDGE DETAILS */
+const seamMaterial=new THREE.MeshStandardMaterial({
+ color:0x241009,
+ roughness:.35
+});
+
+for(let x=0;x<3;x++){
+ const line=new THREE.Mesh(
+  new THREE.BoxGeometry(.025,.012,2.85),
+  seamMaterial
+ );
+ line.position.set(-1.09+x*1.09,.485,0);
+ bar.add(line);
+}
+
+for(let z=0;z<2;z++){
+ const line=new THREE.Mesh(
+  new THREE.BoxGeometry(4.6,.012,.025),
+  seamMaterial
+ );
+ line.position.set(0,.485,-.49+z*.98);
+ bar.add(line);
+}
+
+/* CUSTOM EMBOSSED SS BRAND MARK */
+const emblemCanvas=document.createElement('canvas');
+emblemCanvas.width=512;
+emblemCanvas.height=512;
+
+const ctx=emblemCanvas.getContext('2d');
+ctx.clearRect(0,0,512,512);
+ctx.textAlign='center';
+ctx.textBaseline='middle';
+ctx.fillStyle='#e9c28c';
+ctx.font='bold 175px Georgia';
+ctx.fillText('SS',256,256);
+
+const emblemTexture=new THREE.CanvasTexture(emblemCanvas);
+emblemTexture.colorSpace=THREE.SRGBColorSpace;
+
+const emblem=new THREE.Mesh(
+ new THREE.PlaneGeometry(.46,.46),
+ new THREE.MeshBasicMaterial({
+  map:emblemTexture,
+  transparent:true,
+  side:THREE.DoubleSide
+ })
+);
+emblem.rotation.x=-Math.PI/2;
+emblem.position.set(0,.485,0);
+bar.add(emblem);
+
+/* CHOCOLATE DRIPS */
+function createDrip(x,y,z,radius,length){
+ const drop=new THREE.Mesh(
+  new THREE.SphereGeometry(radius,32,24),
+  dripMaterial
+ );
+ drop.scale.y=length;
+ drop.position.set(x,y,z);
+ drop.castShadow=true;
+ bar.add(drop);
+}
+
+for(let i=0;i<9;i++){
+ createDrip(-2.05+i*.51,-.35,-1.49,.10+(i%3)*.025,2.1+(i%3)*.35);
+}
+for(let i=0;i<5;i++){
+ createDrip(2.39,-.31,-1.05+i*.48,.12,2.2);
+}
+
+/* CHOCOLATE GLOSSY DECORATION */
+const decorativeGold=new THREE.MeshStandardMaterial({
+ color:0xc99655,
+ metalness:.65,
+ roughness:.23
+});
+
+const haloRing=new THREE.Mesh(
+ new THREE.TorusGeometry(2.9,.012,12,180),
+ decorativeGold
+);
+haloRing.rotation.x=1.2;
+haloRing.position.y=-.48;
+bar.add(haloRing);
+
+/* BACKGROUND FLOATING PARTICLES */
+const particleCount=450;
+const particlePositions=new Float32Array(particleCount*3);
+
+for(let i=0;i<particleCount;i++){
+ particlePositions[i*3]=(Math.random()-.5)*14;
+ particlePositions[i*3+1]=(Math.random()-.5)*10;
+ particlePositions[i*3+2]=(Math.random()-.5)*12;
+}
+
+const particleGeometry=new THREE.BufferGeometry();
+particleGeometry.setAttribute(
+ 'position',
+ new THREE.BufferAttribute(particlePositions,3)
+);
+
+const particleMaterial=new THREE.PointsMaterial({
+ color:0xe7bd80,
+ size:.025,
+ transparent:true,
+ opacity:.65,
+ sizeAttenuation:true,
+ depthWrite:false
+});
+
+const particles=new THREE.Points(particleGeometry,particleMaterial);
+scene.add(particles);
+
+/* INITIAL BAR POSITION */
+bar.rotation.x=-.2;
+bar.rotation.z=-.1;
+
+/* RESPONSIVE CAMERA */
+function resize(){
+ const width=canvas.clientWidth;
+ const height=canvas.clientHeight;
+ if(!width||!height)return;
+ renderer.setSize(width,height,false);
+ camera.aspect=width/height;
+ camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas);
+resize();
+
+/* ANIMATION */
+const clock=new THREE.Clock();
+const originalX=-.2;
+
+function animate(){
+ requestAnimationFrame(animate);
+
+ const time=clock.getElapsedTime();
+
+ // Smooth floating chocolate.
+ bar.position.y=Math.sin(time*.9)*.11;
+
+ // Gentle natural tilt.
+ bar.rotation.x=originalX+Math.sin(time*.4)*.035;
+ bar.rotation.z=-.1+Math.sin(time*.55)*.025;
+
+ // Moving background particles.
+ particles.rotation.y=time*.025;
+ particles.rotation.x=Math.sin(time*.15)*.035;
+
+ controls.update();
+ renderer.render(scene,camera);
+}
+
+animate();
+
+/* DISPLAY A FRIENDLY MESSAGE IF WEBGL IS NOT AVAILABLE */
+</script>
+
+</body>
+</html>
