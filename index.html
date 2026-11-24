@@ -315,4 +315,1546 @@ nav.scrolled {
 }
 
 .btn {
-  display: inline
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 16px 26px;
+  background: linear-gradient(125deg, var(--gold-bright), var(--gold) 48%, var(--gold2));
+  color: #210d05;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.32s var(--ease-out), box-shadow 0.32s var(--ease-out), filter 0.32s ease;
+  box-shadow: 0 12px 32px rgba(183, 123, 69, 0.28);
+}
+
+.btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(231, 189, 130, 0.42);
+  filter: brightness(1.04);
+}
+
+.btn.outline {
+  background: rgba(255, 241, 223, 0.03);
+  backdrop-filter: blur(14px);
+  color: var(--cream);
+  border-color: rgba(255, 241, 223, 0.25);
+  box-shadow: none;
+}
+
+.btn.outline:hover {
+  border-color: rgba(231, 189, 130, 0.65);
+  background: rgba(231, 189, 130, 0.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-text {
+  margin-top: 44px;
+  color: #a88d72;
+  font-size: 9.5px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+}
+
+/* 3D CHOCOLATE STAGE */
+.stage {
+  position: relative;
+  height: 670px;
+  min-width: 0;
+  border-radius: 32px;
+  border: 1px solid rgba(231, 189, 130, 0.16);
+  background: radial-gradient(circle at 50% 48%, rgba(92, 41, 19, 0.24), rgba(16, 7, 4, 0.35) 70%);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+#chocolate {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+
+#chocolate:active {
+  cursor: grabbing;
+}
+
+.stage-glow {
+  position: absolute;
+  width: 72%;
+  height: 72%;
+  left: 14%;
+  top: 14%;
+  background: radial-gradient(circle, rgba(196, 98, 42, 0.28), transparent 70%);
+  filter: blur(85px);
+  pointer-events: none;
+}
+
+.stage-tip {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(16, 7, 4, 0.62);
+  border: 1px solid rgba(231, 189, 130, 0.2);
+  backdrop-filter: blur(12px);
+  font-size: 9px;
+  letter-spacing: 2.2px;
+  color: #d6bc9c;
+  pointer-events: none;
+}
+
+.reset-view-btn {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(16, 7, 4, 0.68);
+  border: 1px solid rgba(231, 189, 130, 0.28);
+  backdrop-filter: blur(12px);
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.reset-view-btn:hover {
+  background: rgba(231, 189, 130, 0.16);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.stage-label {
+  position: absolute;
+  bottom: 16px;
+  width: 100%;
+  text-align: center;
+  font-size: 9.5px;
+  letter-spacing: 3px;
+  color: #cbb08e;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.stage-label strong {
+  color: var(--gold);
+}
+
+/* SECTIONS */
+section.content {
+  padding: 120px 8%;
+}
+
+.heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 66px;
+}
+
+.heading h2 {
+  font: 600 clamp(44px, 5.8vw, 76px) / 1.08 'Playfair Display', serif;
+  margin: 18px 0 20px;
+}
+
+.heading h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.heading p {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 14.5px;
+}
+
+/* GLASS CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  min-height: 290px;
+  padding: 36px;
+  border: 1px solid var(--glass-border);
+  border-radius: 26px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(26px) saturate(140%);
+  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 223, 0.14),
+    0 24px 54px rgba(0, 0, 0, 0.42);
+  transition: transform 0.45s var(--ease-out), border-color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  right: -90px;
+  top: -100px;
+  background: radial-gradient(circle, rgba(231, 189, 130, 0.22), transparent 70%);
+  filter: blur(36px);
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(231, 189, 130, 0.52);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 223, 0.22),
+    0 28px 64px rgba(0, 0, 0, 0.55);
+}
+
+.card-number {
+  color: var(--gold);
+  font: italic 36px/1 'Playfair Display', serif;
+}
+
+.card h3 {
+  font: 600 28px/1.2 'Playfair Display', serif;
+  margin: 26px 0 14px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+
+/* INGREDIENTS SECTION */
+.ingredient-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.ingredient-copy h2 {
+  font: 600 clamp(44px, 5.6vw, 72px) / 1.08 'Playfair Display', serif;
+  margin: 20px 0 22px;
+}
+
+.ingredient-copy h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.ingredient-copy p {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.9;
+}
+
+.ingredient-visual {
+  height: 450px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(231, 189, 130, 0.26);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(138, 63, 28, 0.55), rgba(38, 15, 7, 0.88) 62%, rgba(16, 7, 4, 0.98) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 223, 0.14),
+    0 28px 65px rgba(0, 0, 0, 0.5);
+}
+
+.ingredient-visual span {
+  font-size: 132px;
+  filter: drop-shadow(0 24px 38px rgba(0, 0, 0, 0.65));
+  animation: floatBadge 4.4s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(4deg); }
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 30px 0 34px;
+}
+
+.fact {
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(255, 241, 223, 0.14);
+  color: #ebd8c0;
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+}
+
+.fact span {
+  color: var(--gold);
+  margin-right: 10px;
+}
+
+/* NUTRITION */
+.nutrients {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.nutrient {
+  text-align: center;
+  padding: 28px 14px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+}
+
+.nutrient:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+}
+
+.nutrient b {
+  display: block;
+  color: var(--gold);
+  font: 600 28px/1.1 'Playfair Display', serif;
+  margin-bottom: 8px;
+}
+
+.nutrient small {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+/* CLOSING CTA */
+.final {
+  text-align: center;
+  padding: 145px 7%;
+  background: radial-gradient(ellipse at center, rgba(110, 48, 22, 0.28), transparent 66%);
+}
+
+.final h2 {
+  font: 600 clamp(48px, 6.8vw, 92px) / 1.08 'Playfair Display', serif;
+  margin: 22px 0;
+}
+
+.final h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.final p {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 15px;
+}
+
+/* FOOTER */
+footer {
+  padding: 76px 7% 38px;
+  text-align: center;
+  background: #090302;
+  border-top: 1px solid rgba(255, 241, 223, 0.1);
+}
+
+.footer-logo {
+  width: 176px;
+  height: 104px;
+  object-fit: contain;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+footer h3 {
+  color: var(--gold);
+  font: 600 26px 'Playfair Display', serif;
+  letter-spacing: 3px;
+}
+
+footer p {
+  color: #a88f75;
+  font-size: 11.5px;
+  margin-top: 10px;
+  letter-spacing: 1.1px;
+}
+
+.credit {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 241, 223, 0.1);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+}
+
+.credit p {
+  margin-top: 8px;
+  color: #8c745c;
+  font-weight: 400;
+}
+
+/* GLASS INGREDIENT MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 2, 1, 0.78);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-box {
+  width: min(860px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  padding: 40px;
+  border: 1px solid rgba(231, 189, 130, 0.36);
+  border-radius: 28px;
+  background: linear-gradient(155deg, rgba(64, 30, 17, 0.92), rgba(18, 7, 4, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 223, 0.16),
+    0 32px 80px rgba(0, 0, 0, 0.75);
+  animation: modalIn 0.38s var(--ease-out);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  font: 600 36px 'Playfair Display', serif;
+}
+
+.close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--cream);
+  font-size: 22px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.close:hover {
+  background: rgba(231, 189, 130, 0.2);
+  transform: rotate(90deg);
+}
+
+.group {
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(255, 241, 223, 0.12);
+}
+
+.group h3 {
+  font: 600 22px 'Playfair Display', serif;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.tag {
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 241, 223, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f2dfc6;
+  font-size: 12px;
+}
+
+.note {
+  color: #bba38a;
+  font-size: 11.5px;
+  line-height: 1.8;
+  margin: 24px 0;
+}
+
+/* REVEAL TRANSITIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay1 { transition-delay: 0.1s; }
+.delay2 { transition-delay: 0.2s; }
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 124px;
+    min-height: auto;
+  }
+  .stage {
+    height: 540px;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .ingredient-layout {
+    grid-template-columns: 1fr;
+  }
+  .nutrients {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  nav {
+    height: 72px;
+    padding: 0 5%;
+  }
+  .logo {
+    width: 116px;
+    height: 52px;
+  }
+  .menu {
+    display: inline-flex;
+  }
+  .links {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    width: 100%;
+    padding: 24px 6%;
+    background: rgba(18, 7, 4, 0.96);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(231, 189, 130, 0.2);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .links.open {
+    display: flex;
+  }
+  .hero {
+    padding: 112px 6% 52px;
+  }
+  .hero h1 {
+    font-size: 58px;
+    letter-spacing: -2px;
+  }
+  .stage {
+    height: 410px;
+    border-radius: 24px;
+  }
+  .stage-tip, .reset-view-btn {
+    top: 12px;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+    padding: 6px 10px;
+  }
+  .stage-tip {
+    left: 12px;
+  }
+  .reset-view-btn {
+    right: 12px;
+  }
+  section.content {
+    padding: 88px 6%;
+  }
+  .ingredient-visual {
+    height: 320px;
+  }
+  .ingredient-visual span {
+    font-size: 104px;
+  }
+  .modal-box {
+    padding: 24px;
+    border-radius: 22px;
+  }
+  .modal-header h2 {
+    font-size: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
+<div class="noise"></div>
+<div class="progress" id="progress"></div>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <img src="logo.png" alt="Sugarless Shenanigans">
+    <p>CHOCOLATE REIMAGINED</p>
+    <div class="loader-line"></div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="#top"><img src="logo.png" class="logo" alt="Sugarless Shenanigans"></a>
+  <button class="menu" id="menu" aria-label="Toggle navigation menu">☰</button>
+  <div class="links" id="links">
+    <a href="#story">Our story</a>
+    <a href="#ingredients">Ingredients</a>
+    <a href="#nutrition">Nutrition</a>
+    <a href="#ingredients" class="nav-button" onclick="openIngredients(event)">Explore ↗</a>
+  </div>
+</nav>
+
+<main id="top">
+
+<section class="hero">
+
+  <div class="reveal">
+    <div class="eyebrow">A Little Mischief. A Lot of Chocolate.</div>
+
+    <h1>
+      Chocolate.<br>
+      Made <em>different.</em>
+    </h1>
+
+    <p class="description">
+      Introducing Sugarless Shenanigans.
+      A new chocolate concept combining rich cacao,
+      creamy textures, colourful superfoods and
+      thoughtfully selected ingredients.
+    </p>
+
+    <div class="buttons">
+      <button class="btn" onclick="openIngredients()">Discover Ingredients ↗</button>
+      <a href="#story" class="btn outline">Our Story</a>
+    </div>
+
+    <div class="scroll-text">↓ Scroll to discover the experience</div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="stage-glow"></div>
+    <div class="stage-tip">PROCEDURAL PBR CHOCOLATE</div>
+    <button class="reset-view-btn" id="resetView" type="button">Reset Angle</button>
+    <canvas id="chocolate" aria-label="Interactive 3D chocolate bar with raised squares, floating pieces, and animated droplets"></canvas>
+    <div class="stage-label">
+      <strong>360° Chocolate Experience</strong> · Drag to Rotate · Scroll to Zoom
+    </div>
+  </div>
+
+</section>
+
+<section class="content" id="story">
+  <div class="heading reveal">
+    <div class="eyebrow">The Shenanigans Idea</div>
+    <h2>Not your <em>ordinary</em> chocolate.</h2>
+    <p>
+      We believe chocolate can be exciting, creative
+      and made with carefully considered ingredients.
+    </p>
+  </div>
+
+  <div class="cards">
+    <article class="card reveal">
+      <div class="card-number">01</div>
+      <h3>Rich cacao</h3>
+      <p>A deep chocolate foundation with cocoa butter and naturally high-flavanol cacao.</p>
+    </article>
+
+    <article class="card reveal delay1">
+      <div class="card-number">02</div>
+      <h3>Superfood creativity</h3>
+      <p>Seeds, berries, nuts and plant-based ingredients bring exciting textures.</p>
+    </article>
+
+    <article class="card reveal delay2">
+      <div class="card-number">03</div>
+      <h3>Thoughtful nutrition</h3>
+      <p>Exploring fibre, plant nutrients, vitamins and minerals in one chocolate concept.</p>
+    </article>
+  </div>
+</section>
+
+<section class="content" id="ingredients">
+  <div class="ingredient-layout">
+
+    <div class="ingredient-copy reveal">
+      <div class="eyebrow">The Ingredient Collection</div>
+      <h2>Good things.<br><em>Great chocolate.</em></h2>
+      <p>
+        Every ingredient has a reason to be considered.
+        From organic cocoa butter to chia seeds and
+        freeze-dried berries, our concept explores
+        a colourful collection of plant ingredients.
+      </p>
+
+      <div class="facts">
+        <div class="fact"><span>✦</span> Organic cacao</div>
+        <div class="fact"><span>✦</span> Chia seeds</div>
+        <div class="fact"><span>✦</span> Flaxseed</div>
+        <div class="fact"><span>✦</span> Hemp hearts</div>
+        <div class="fact"><span>✦</span> Blueberries</div>
+        <div class="fact"><span>✦</span> Natural vanilla</div>
+      </div>
+
+      <button class="btn" onclick="openIngredients()">View All Ingredients ↗</button>
+    </div>
+
+    <div class="ingredient-visual reveal delay1">
+      <span>🍫</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="content" id="nutrition">
+  <div class="heading reveal">
+    <div class="eyebrow">The Nutrition Concept</div>
+    <h2>More than <em>just cacao.</em></h2>
+    <p>
+      Exploring naturally occurring nutrients and
+      carefully formulated essential vitamins and minerals.
+    </p>
+  </div>
+
+  <div class="nutrients">
+    <div class="nutrient reveal"><b>A–K</b><small>Vitamins</small></div>
+    <div class="nutrient reveal delay1"><b>10+</b><small>Minerals</small></div>
+    <div class="nutrient reveal delay2"><b>Omega</b><small>Fatty Acids</small></div>
+    <div class="nutrient reveal"><b>Fibre</b><small>Plant Fibre</small></div>
+    <div class="nutrient reveal delay1"><b>ALA</b><small>Omega-3</small></div>
+    <div class="nutrient reveal delay2"><b>Plant</b><small>Protein</small></div>
+    <div class="nutrient reveal"><b>Cocoa</b><small>Flavanols</small></div>
+    <div class="nutrient reveal delay1"><b>Berry</b><small>Polyphenols</small></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="eyebrow reveal">Welcome to the Shenanigans</div>
+  <h2 class="reveal">A little less <em>ordinary.</em><br>A lot more interesting.</h2>
+  <p class="reveal">Chocolate with character.</p>
+  <br><br>
+  <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to Top ↑</button>
+</section>
+
+</main>
+
+<footer>
+  <img src="logo.png" class="footer-logo" alt="Sugarless Shenanigans">
+  <h3>SUGARLESS SHENANIGANS</h3>
+  <p>Chocolate with character.</p>
+  <p>Made for curious chocolate lovers.</p>
+  <div class="credit">
+    WEBSITE BY MOHAMMAD HASSAN
+    <p>© 2026 · ALL RIGHTS RESERVED</p>
+  </div>
+</footer>
+
+<!-- INGREDIENT WINDOW -->
+<div class="modal" id="modal" onclick="outsideClose(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h2 id="modalTitle">Inside the chocolate.</h2>
+      <button class="close" onclick="closeIngredients()" aria-label="Close modal">×</button>
+    </div>
+
+    <div class="group">
+      <h3>01 · Chocolate foundation</h3>
+      <div class="tags">
+        <span class="tag">Organic cocoa butter</span>
+        <span class="tag">High-flavanol cacao</span>
+        <span class="tag">Almond butter</span>
+        <span class="tag">Natural vanilla</span>
+        <span class="tag">Sunflower lecithin</span>
+        <span class="tag">Stevia</span>
+        <span class="tag">Sea salt</span>
+        <span class="tag">Cinnamon</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>02 · Seeds, nuts and fibre</h3>
+      <div class="tags">
+        <span class="tag">Flaxseed</span>
+        <span class="tag">Chia seeds</span>
+        <span class="tag">Hemp hearts</span>
+        <span class="tag">Pumpkin seeds</span>
+        <span class="tag">Pistachios</span>
+        <span class="tag">Inulin</span>
+        <span class="tag">Acacia fibre</span>
+        <span class="tag">Psyllium</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>03 · Berries and superfoods</h3>
+      <div class="tags">
+        <span class="tag">Blueberries</span>
+        <span class="tag">Strawberries</span>
+        <span class="tag">Raspberry powder</span>
+        <span class="tag">Beetroot</span>
+        <span class="tag">Matcha</span>
+        <span class="tag">Turmeric</span>
+        <span class="tag">Ginger</span>
+        <span class="tag">Pumpkin protein</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>04 · Vitamins</h3>
+      <div class="tags">
+        <span class="tag">Vitamin A</span>
+        <span class="tag">B1</span><span class="tag">B2</span>
+        <span class="tag">B3</span><span class="tag">B5</span>
+        <span class="tag">B6</span><span class="tag">B7</span>
+        <span class="tag">B9</span><span class="tag">B12</span>
+        <span class="tag">Vitamin C</span>
+        <span class="tag">Vitamin D</span>
+        <span class="tag">Vitamin E</span>
+        <span class="tag">Vitamin K1</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>05 · Essential minerals</h3>
+      <div class="tags">
+        <span class="tag">Magnesium</span>
+        <span class="tag">Calcium</span>
+        <span class="tag">Iron</span>
+        <span class="tag">Zinc</span>
+        <span class="tag">Potassium</span>
+        <span class="tag">Selenium</span>
+        <span class="tag">Iodine</span>
+        <span class="tag">Copper</span>
+        <span class="tag">Manganese</span>
+        <span class="tag">Phosphorus</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>06 · Naturally occurring nutrients</h3>
+      <div class="tags">
+        <span class="tag">Omega-3 ALA</span>
+        <span class="tag">Omega-6</span>
+        <span class="tag">Plant protein</span>
+        <span class="tag">Dietary fibre</span>
+        <span class="tag">Cocoa flavanols</span>
+        <span class="tag">Anthocyanins</span>
+        <span class="tag">Polyphenols</span>
+      </div>
+    </div>
+
+    <p class="note">
+      This is a proposed ingredient collection, not a verified final recipe.
+      Optional ingredients may be alternatives rather than ingredients
+      used together. Almonds and pistachios are allergens. Actual
+      nutritional quantities and product claims require professional
+      formulation and independent testing.
+    </p>
+
+    <button class="btn" onclick="closeIngredients()">Close</button>
+  </div>
+</div>
+
+<script>
+/* LOADER */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 650);
+});
+
+/* NAVIGATION & PROGRESS */
+const nav = document.getElementById('navbar');
+const progressEl = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 45);
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  progressEl.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+}, { passive: true });
+
+const menuBtn = document.getElementById('menu');
+const linksEl = document.getElementById('links');
+menuBtn.addEventListener('click', () => {
+  linksEl.classList.toggle('open');
+});
+linksEl.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => linksEl.classList.remove('open'));
+});
+
+/* INGREDIENT MODAL */
+function openIngredients(e) {
+  if (e) e.preventDefault();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeIngredients() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function outsideClose(e) {
+  if (e.target.id === 'modal') closeIngredients();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeIngredients();
+});
+
+/* SCROLL REVEALS */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<!-- REAL-TIME PROCEDURAL 3D CHOCOLATE SHOWCASE -->
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* DETERMINISTIC SEEDED PRNG FOR CONSISTENT TEXTURES & SCULPTING */
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const rng = mulberry32(20260519);
+
+/* SCENE & CAMERA */
+const canvas = document.getElementById('chocolate');
+const scene = new THREE.Scene();
+scene.background = null;
+
+const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
+const DEFAULT_CAM_POS = new THREE.Vector3(4.7, 4.4, 7.6);
+camera.position.copy(DEFAULT_CAM_POS);
+
+/* RENDERER */
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  alpha: true,
+  antialias: true,
+  powerPreference: 'high-performance'
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+/* STUDIO ENVIRONMENT REFLECTIONS */
+const pmrem = new THREE.PMREMGenerator(renderer);
+const roomEnv = new RoomEnvironment();
+const envRT = pmrem.fromScene(roomEnv, 0.035);
+scene.environment = envRT.texture;
+scene.environmentIntensity = 0.92;
+roomEnv.dispose();
+pmrem.dispose();
+
+/* ORBIT CONTROLS */
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.055;
+controls.enablePan = false;
+controls.minDistance = 4.6;
+controls.maxDistance = 12.5;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+controls.target.set(0, -0.05, 0);
+
+document.getElementById('resetView').addEventListener('click', () => {
+  camera.position.copy(DEFAULT_CAM_POS);
+  controls.target.set(0, -0.05, 0);
+  bar.rotation.set(-0.24, 0, -0.08);
+  controls.update();
+});
+
+/* CINEMATIC STUDIO LIGHTING */
+const hemiLight = new THREE.HemisphereLight(0xffe9cc, 0x180703, 1.45);
+scene.add(hemiLight);
+
+const keyLight = new THREE.DirectionalLight(0xffd7a8, 3.8);
+keyLight.position.set(4.5, 8.2, 5.8);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.camera.near = 1;
+keyLight.shadow.camera.far = 25;
+keyLight.shadow.camera.left = -7.5;
+keyLight.shadow.camera.right = 7.5;
+keyLight.shadow.camera.top = 7.5;
+keyLight.shadow.camera.bottom = -7.5;
+keyLight.shadow.bias = -0.0004;
+keyLight.shadow.normalBias = 0.025;
+scene.add(keyLight);
+
+const warmRim = new THREE.DirectionalLight(0xff9a52, 2.5);
+warmRim.position.set(-6.5, 3.8, 3.2);
+scene.add(warmRim);
+
+const backSpecLight = new THREE.DirectionalLight(0xffe2be, 4.2);
+backSpecLight.position.set(0.8, 4.5, -7.2);
+scene.add(backSpecLight);
+
+const frontFill = new THREE.PointLight(0xffd5a6, 26, 20, 1.6);
+frontFill.position.set(0.5, 2.4, 6.8);
+scene.add(frontFill);
+
+/* PROCEDURAL PBR TEXTURES (ALBEDO + ROUGHNESS + BUMP) */
+function createChocolateMaps() {
+  const size = 1024;
+
+  // 1. Albedo / Color Map: rich tempered dark cacao with subtle cocoa butter marbling
+  const colorCanvas = document.createElement('canvas');
+  colorCanvas.width = size;
+  colorCanvas.height = size;
+  const cCtx = colorCanvas.getContext('2d');
+
+  const grad = cCtx.createLinearGradient(0, 0, size, size);
+  grad.addColorStop(0, '#492214');
+  grad.addColorStop(0.5, '#3b190e');
+  grad.addColorStop(1, '#4d2516');
+  cCtx.fillStyle = grad;
+  cCtx.fillRect(0, 0, size, size);
+
+  // Subtle tempering streaks
+  for (let i = 0; i < 160; i++) {
+    const x = rng() * size;
+    const y = rng() * size;
+    const w = 90 + rng() * 260;
+    const h = 14 + rng() * 42;
+    cCtx.save();
+    cCtx.translate(x, y);
+    cCtx.rotate((rng() - 0.5) * 0.45);
+    cCtx.fillStyle = rng() > 0.5
+      ? 'rgba(138, 76, 42, 0.032)'
+      : 'rgba(15, 5, 2, 0.045)';
+    cCtx.beginPath();
+    cCtx.ellipse(0, 0, w, h, 0, 0, Math.PI * 2);
+    cCtx.fill();
+    cCtx.restore();
+  }
+
+  // Fine organic micro-speckles
+  for (let i = 0; i < 48000; i++) {
+    const x = rng() * size;
+    const y = rng() * size;
+    const r = 0.4 + rng() * 1.9;
+    cCtx.fillStyle = rng() > 0.52
+      ? 'rgba(218, 158, 102, 0.028)'
+      : 'rgba(10, 3, 1, 0.045)';
+    cCtx.fillRect(x, y, r, r);
+  }
+
+  // 2. Roughness Map: glossy tempered peaks vs slightly softer micro-pockets
+  const roughCanvas = document.createElement('canvas');
+  roughCanvas.width = size;
+  roughCanvas.height = size;
+  const rCtx = roughCanvas.getContext('2d');
+  rCtx.fillStyle = 'rgb(52, 52, 52)'; // ~0.20 base roughness
+  rCtx.fillRect(0, 0, size, size);
+
+  for (let i = 0; i < 36000; i++) {
+    const x = rng() * size;
+    const y = rng() * size;
+    const s = 0.8 + rng() * 2.8;
+    const v = Math.floor(34 + rng() * 48); // glossy 0.13 to 0.31 range
+    rCtx.fillStyle = `rgb(${v},${v},${v})`;
+    rCtx.fillRect(x, y, s, s);
+  }
+
+  // 3. Bump Map: crisp molded surface grain & subtle imperfections
+  const bumpCanvas = document.createElement('canvas');
+  bumpCanvas.width = 512;
+  bumpCanvas.height = 512;
+  const bCtx = bumpCanvas.getContext('2d');
+  bCtx.fillStyle = 'rgb(128, 128, 128)';
+  bCtx.fillRect(0, 0, 512, 512);
+
+  for (let i = 0; i < 32000; i++) {
+    const x = rng() * 512;
+    const y = rng() * 512;
+    const s = 0.6 + rng() * 2.0;
+    const v = Math.floor(106 + rng() * 46);
+    bCtx.fillStyle = `rgb(${v},${v},${v})`;
+    bCtx.fillRect(x, y, s, s);
+  }
+
+  // Subtle tiny air-pocket / mold pinpricks
+  for (let i = 0; i < 95; i++) {
+    const x = rng() * 512;
+    const y = rng() * 512;
+    const rad = 0.7 + rng() * 1.4;
+    bCtx.fillStyle = 'rgba(72, 72, 72, 0.55)';
+    bCtx.beginPath();
+    bCtx.arc(x, y, rad, 0, Math.PI * 2);
+    bCtx.fill();
+  }
+
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  const colorMap = new THREE.CanvasTexture(colorCanvas);
+  colorMap.colorSpace = THREE.SRGBColorSpace;
+  colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping;
+  colorMap.repeat.set(2, 2);
+  colorMap.anisotropy = maxAniso;
+
+  const roughnessMap = new THREE.CanvasTexture(roughCanvas);
+  roughnessMap.wrapS = roughnessMap.wrapT = THREE.RepeatWrapping;
+  roughnessMap.repeat.set(2, 2);
+  roughnessMap.anisotropy = maxAniso;
+
+  const bumpMap = new THREE.CanvasTexture(bumpCanvas);
+  bumpMap.wrapS = bumpMap.wrapT = THREE.RepeatWrapping;
+  bumpMap.repeat.set(2, 2);
+  bumpMap.anisotropy = maxAniso;
+
+  return { colorMap, roughnessMap, bumpMap };
+}
+
+const { colorMap, roughnessMap, bumpMap } = createChocolateMaps();
+
+/* PHYSICAL CHOCOLATE MATERIALS */
+const squareMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x4b2214,
+  map: colorMap,
+  roughnessMap,
+  bumpMap,
+  bumpScale: 0.014,
+  roughness: 0.24,
+  metalness: 0.0,
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.075,
+  reflectivity: 0.9,
+  envMapIntensity: 1.35
+});
+
+const baseMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x33140b,
+  map: colorMap,
+  roughnessMap,
+  bumpMap,
+  bumpScale: 0.016,
+  roughness: 0.28,
+  metalness: 0.0,
+  clearcoat: 0.88,
+  clearcoatRoughness: 0.11,
+  envMapIntensity: 1.15
+});
+
+const liquidChocMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x3c180c,
+  roughness: 0.11,
+  metalness: 0.0,
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.035,
+  ior: 1.52,
+  reflectivity: 1.0,
+  envMapIntensity: 1.55
+});
+
+/* BUILD SCULPTED CHOCOLATE BAR (4x3 RAISED SQUARES + ROUNDED BASE) */
+const bar = new THREE.Group();
+scene.add(bar);
+
+// Outer rounded slab base
+const baseSlab = new THREE.Mesh(
+  new RoundedBoxGeometry(5.42, 0.36, 3.72, 8, 0.14),
+  baseMaterial
+);
+baseSlab.position.y = -0.14;
+baseSlab.castShadow = true;
+baseSlab.receiveShadow = true;
+bar.add(baseSlab);
+
+// Recess channel bed under the squares
+const grooveBed = new THREE.Mesh(
+  new RoundedBoxGeometry(5.16, 0.08, 3.46, 6, 0.03),
+  new THREE.MeshStandardMaterial({
+    color: 0x220c06,
+    roughness: 0.42,
+    metalness: 0.02
+  })
+);
+grooveBed.position.y = 0.04;
+grooveBed.receiveShadow = true;
+bar.add(grooveBed);
+
+// Helper to create a slightly pillowed, rounded-edge chocolate square
+function makePillowedSquareGeometry(w, h, d) {
+  const geom = new RoundedBoxGeometry(w, h, d, 9, 0.095);
+  const pos = geom.attributes.position;
+  const halfW = w * 0.5;
+  const halfD = d * 0.5;
+
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+
+    if (y > 0.02) {
+      const nx = Math.min(1, Math.abs(x) / halfW);
+      const nz = Math.min(1, Math.abs(z) / halfD);
+      const dome = Math.max(0, 1 - (nx * nx * 0.55 + nz * nz * 0.55));
+      pos.setY(i, y + dome * 0.055);
+    }
+  }
+  geom.computeVertexNormals();
+  return geom;
+}
+
+const cols = 4;
+const rows = 3;
+const spacingX = 1.27;
+const spacingZ = 1.12;
+const squareGeom = makePillowedSquareGeometry(1.16, 0.32, 1.01);
+
+// Subtle gold-champagne embossed mark on center squares
+function makeMarkTexture(text) {
+  const c = document.createElement('canvas');
+  c.width = 256;
+  c.height = 256;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, 256, 256);
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = '600 84px "Playfair Display", Georgia, serif';
+
+  // Subtle dark shadow for embossed depth
+  ctx.fillStyle = 'rgba(14, 4, 2, 0.65)';
+  ctx.fillText(text, 130, 132);
+
+  // Warm gold-cacao highlight
+  ctx.fillStyle = 'rgba(235, 194, 136, 0.42)';
+  ctx.fillText(text, 128, 128);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+const markTex = makeMarkTexture('SS');
+const markMat = new THREE.MeshBasicMaterial({
+  map: markTex,
+  transparent: true,
+  depthWrite: false,
+  polygonOffset: true,
+  polygonOffsetFactor: -1
+});
+
+const squares = [];
+for (let ix = 0; ix < cols; ix++) {
+  for (let iz = 0; iz < rows; iz++) {
+    const px = (ix - (cols - 1) / 2) * spacingX;
+    const pz = (iz - (rows - 1) / 2) * spacingZ;
+
+    const sq = new THREE.Mesh(squareGeom, squareMaterial);
+    sq.position.set(px, 0.21, pz);
+    sq.castShadow = true;
+    sq.receiveShadow = true;
+    sq.userData = {
+      baseY: 0.21,
+      phase: ix * 0.7 + iz * 1.1
+    };
+    bar.add(sq);
+    squares.push(sq);
+
+    // Add subtle embossed monogram on the two central squares
+    if ((ix === 1 || ix === 2) && iz === 1) {
+      const decal = new THREE.Mesh(new THREE.PlaneGeometry(0.46, 0.46), markMat);
+      decal.rotation.x = -Math.PI / 2;
+      decal.position.set(px, 0.426, pz);
+      bar.add(decal);
+    }
+  }
+}
+
+/* RIM BEADS / MELTED EDGE COLLARS AROUND BAR */
+const rimCollar = new THREE.Mesh(
+  new RoundedBoxGeometry(5.46, 0.11, 3.76, 8, 0.055),
+  liquidChocMaterial
+);
+rimCollar.position.y = -0.27;
+rimCollar.castShadow = true;
+bar.add(rimCollar);
+
+/* ANIMATED MELTING CHOCOLATE DROPLETS */
+// Each droplet cycles through: growing at rim -> stretching -> detaching & falling
+function createDropletGeometry() {
+  const pts = [
+    new THREE.Vector2(0.001, 0.14),
+    new THREE.Vector2(0.032, 0.08),
+    new THREE.Vector2(0.068, 0.01),
+    new THREE.Vector2(0.076, -0.05),
+    new THREE.Vector2(0.052, -0.12),
+    new THREE.Vector2(0.001, -0.17)
+  ];
+  const geom = new THREE.LatheGeometry(pts, 24);
+  geom.computeVertexNormals();
+  return geom;
+}
+
+const dropletGeom = createDropletGeometry();
+const droplets = [];
+const dropletCount = 16;
+
+for (let i = 0; i < dropletCount; i++) {
+  const drop = new THREE.Mesh(dropletGeom, liquidChocMaterial);
+  drop.castShadow = true;
+
+  // Distribute along the front/side edges of the chocolate bar
+  const alongFront = i < 11;
+  const edgeX = alongFront
+    ? -2.35 + ((i * 0.47) % 4.7)
+    : (i % 2 === 0 ? -2.71 : 2.71);
+  const edgeZ = alongFront
+    ? 1.85 + (rng() - 0.5) * 0.06
+    : -1.35 + ((i * 0.54) % 2.7);
+
+  drop.userData = {
+    x: edgeX,
+    z: edgeZ,
+    topY: -0.28,
+    cycleSpeed: 0.28 + rng() * 0.22,
+    phase: rng(),
+    baseScale: 0.72 + rng() * 0.45
+  };
+
+  bar.add(drop);
+  droplets.push(drop);
+}
+
+/* FLOATING CHOCOLATE CHUNKS & SHARDS */
+function makeSculptedChunkGeometry(radius, detail = 1, seedFactor = 0.24) {
+  const geom = new THREE.DodecahedronGeometry(radius, detail);
+  const pos = geom.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const vx = pos.getX(i);
+    const vy = pos.getY(i);
+    const vz = pos.getZ(i);
+    const n = 1 + (rng() - 0.5) * seedFactor * 2;
+    pos.setXYZ(i, vx * n, vy * (n * 0.85), vz * n);
+  }
+  geom.computeVertexNormals();
+  return geom;
+}
+
+const floatingChunks = new THREE.Group();
+scene.add(floatingChunks);
+
+const chunkConfigs = [
+  { pos: [-3.35, 0.85, 1.35], r: 0.24, mat: squareMaterial, rotSpeed: [0.004, 0.006, 0.003], bobAmp: 0.16, bobFreq: 1.1 },
+  { pos: [3.25, 0.65, 1.15],  r: 0.21, mat: liquidChocMaterial, rotSpeed: [-0.005, 0.004, 0.003], bobAmp: 0.14, bobFreq: 0.95 },
+  { pos: [-2.85, -0.95, 1.85], r: 0.17, mat: squareMaterial, rotSpeed: [0.003, -0.005, 0.004], bobAmp: 0.13, bobFreq: 1.25 },
+  { pos: [2.95, -0.82, -1.45], r: 0.22, mat: baseMaterial, rotSpeed: [0.004, 0.003, -0.005], bobAmp: 0.15, bobFreq: 1.05 },
+  { pos: [-3.65, -0.25, -1.2], r: 0.19, mat: liquidChocMaterial, rotSpeed: [-0.003, -0.004, 0.002], bobAmp: 0.12, bobFreq: 0.85 },
+  { pos: [2.15, 1.45, -1.95],  r: 0.16, mat: squareMaterial, rotSpeed: [0.005, 0.002, 0.004], bobAmp: 0.14, bobFreq: 1.15 },
+  { pos: [-1.45, 1.55, -2.25], r: 0.14, mat: baseMaterial, rotSpeed: [-0.004, 0.005, -0.002], bobAmp: 0.11, bobFreq: 1.0 },
+  { pos: [3.65, 0.05, -0.15],  r: 0.13, mat: liquidChocMaterial, rotSpeed: [0.006, -0.003, 0.005], bobAmp: 0.12, bobFreq: 1.3 },
+  { pos: [-1.95, -1.35, 2.25], r: 0.12, mat: squareMaterial, rotSpeed: [0.003, 0.004, -0.004], bobAmp: 0.1, bobFreq: 0.9 },
+  { pos: [1.35, -1.42, 2.35],  r: 0.15, mat: liquidChocMaterial, rotSpeed: [-0.005, 0.003, 0.003], bobAmp: 0.12, bobFreq: 1.2 }
+];
+
+chunkConfigs.forEach((cfg, idx) => {
+  const mesh = new THREE.Mesh(makeSculptedChunkGeometry(cfg.r, 1, 0.26), cfg.mat);
+  mesh.position.set(...cfg.pos);
+  mesh.rotation.set(rng() * Math.PI, rng() * Math.PI, rng() * Math.PI);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData = {
+    baseY: cfg.pos[1],
+    rotSpeed: cfg.rotSpeed,
+    bobAmp: cfg.bobAmp,
+    bobFreq: cfg.bobFreq,
+    phase: idx * 0.85
+  };
+  floatingChunks.add(mesh);
+});
+
+/* WARM GOLDEN CACAO DUST PARTICLES */
+const dustCount = 480;
+const dustPositions = new Float32Array(dustCount * 3);
+for (let i = 0; i < dustCount; i++) {
+  dustPositions[i * 3] = (rng() - 0.5) * 14;
+  dustPositions[i * 3 + 1] = (rng() - 0.5) * 9;
+  dustPositions[i * 3 + 2] = (rng() - 0.5) * 11;
+}
+
+const dustGeom = new THREE.BufferGeometry();
+dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+
+const dustMat = new THREE.PointsMaterial({
+  color: 0xecc284,
+  size: 0.024,
+  transparent: true,
+  opacity: 0.55,
+  depthWrite: false
+});
+
+const dust = new THREE.Points(dustGeom, dustMat);
+scene.add(dust);
+
+/* SOFT SHADOW CATCHER PLANE */
+const shadowPlane = new THREE.Mesh(
+  new THREE.PlaneGeometry(40, 40),
+  new THREE.ShadowMaterial({ opacity: 0.26 })
+);
+shadowPlane.rotation.x = -Math.PI / 2;
+shadowPlane.position.y = -2.15;
+shadowPlane.receiveShadow = true;
+scene.add(shadowPlane);
+
+/* INITIAL HERO POSE */
+bar.rotation.set(-0.24, 0, -0.08);
+
+/* RESPONSIVE RESIZING */
+function resize() {
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  if (!w || !h) return;
+
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+
+new ResizeObserver(resize).observe(canvas);
+resize();
+
+/* ANIMATION LOOP */
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Gentle levitation and organic tilt of the chocolate bar
+  bar.position.y = Math.sin(t * 0.85) * 0.09;
+  bar.rotation.z = -0.08 + Math.sin(t * 0.45) * 0.022;
+  bar.rotation.x = -0.24 + Math.cos(t * 0.38) * 0.016;
+
+  // Micro-breathing on individual raised squares
+  for (let i = 0; i < squares.length; i++) {
+    const sq = squares[i];
+    sq.position.y = sq.userData.baseY + Math.sin(t * 1.1 + sq.userData.phase) * 0.004;
+  }
+
+  // Animated melting droplets: swell -> elongate -> detach & fall -> reset
+  for (let i = 0; i < droplets.length; i++) {
+    const d = droplets[i];
+    const u = d.userData;
+    const cycle = (t * u.cycleSpeed + u.phase) % 1;
+
+    if (cycle < 0.55) {
+      // Growing & stretching at the chocolate edge
+      const p = cycle / 0.55;
+      const ease = p * p;
+      const s = u.baseScale * (0.25 + ease * 0.85);
+      d.position.set(u.x, u.topY - ease * 0.07, u.z);
+      d.scale.set(s, s * (1 + ease * 0.55), s);
+      d.visible = true;
+    } else if (cycle < 0.92) {
+      // Detached falling droplet under gravity
+      const f = (cycle - 0.55) / 0.37;
+      const fallDist = 0.07 + f * f * 1.65;
+      const stretch = 1.35 + f * 0.55;
+      const s = u.baseScale * (1.05 - f * 0.25);
+      d.position.set(u.x, u.topY - fallDist, u.z);
+      d.scale.set(s * 0.92, s * stretch, s * 0.92);
+      d.visible = true;
+    } else {
+      d.visible = false;
+    }
+  }
+
+  // Floating chocolate pieces drifting & rotating
+  floatingChunks.children.forEach(chunk => {
+    const u = chunk.userData;
+    chunk.rotation.x += u.rotSpeed[0];
+    chunk.rotation.y += u.rotSpeed[1];
+    chunk.rotation.z += u.rotSpeed[2];
+    chunk.position.y = u.baseY + Math.sin(t * u.bobFreq + u.phase) * u.bobAmp;
+  });
+
+  // Subtle ambient dust motion
+  dust.rotation.y = t * 0.014;
+  dust.rotation.x = Math.sin(t * 0.16) * 0.025;
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+console.log('Sugarless Shenanigans procedural 3D showcase active.');
+</script>
+
+</body>
+</html>
