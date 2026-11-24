@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,1463 +6,313 @@
 <title>Sugarless Shenanigans | Chocolate Reimagined</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
   }
 }
 </script>
 
 <style>
 :root {
-  --bg:#100704;
-  --brown:#261009;
-  --gold:#e7bd82;
-  --gold2:#b77b45;
-  --cream:#fff1df;
-  --muted:#bca58e;
+  --bg: #0d0503;
+  --bg-elevated: #180905;
+  --brown: #261009;
+  --gold: #e7bd82;
+  --gold-bright: #f6dca8;
+  --gold2: #b77b45;
+  --cream: #fff1df;
+  --muted: #bfa78e;
+  --glass-bg: linear-gradient(145deg, rgba(255, 236, 210, 0.085), rgba(255, 200, 145, 0.018));
+  --glass-border: rgba(231, 189, 130, 0.22);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-* {box-sizing:border-box;margin:0;padding:0}
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html {scroll-behavior:smooth}
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background:var(--bg);
-  color:var(--cream);
-  font-family:'DM Sans',sans-serif;
-  overflow-x:hidden;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-button {font:inherit}
-a {color:inherit;text-decoration:none}
+button {
+  font: inherit;
+}
 
-::selection {background:var(--gold);color:#160905}
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
+::selection {
+  background: var(--gold);
+  color: #160905;
+}
+
+/* AMBIENT BACKDROP */
 .background {
-  position:fixed;
-  inset:0;
-  z-index:-2;
+  position: fixed;
+  inset: 0;
+  z-index: -3;
   background:
-    radial-gradient(ellipse at 75% 20%,#70351b50,transparent 40%),
-    radial-gradient(ellipse at 15% 80%,#55251640,transparent 45%),
-    #100704;
+    radial-gradient(circle at 74% 24%, rgba(138, 61, 27, 0.34), transparent 42%),
+    radial-gradient(circle at 18% 78%, rgba(92, 36, 18, 0.28), transparent 46%),
+    radial-gradient(circle at 50% 50%, rgba(42, 16, 8, 0.55), transparent 75%),
+    var(--bg);
+}
+
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: -2;
+  opacity: 0.45;
+}
+
+.orb-1 {
+  width: 520px;
+  height: 520px;
+  top: -120px;
+  right: -80px;
+  background: rgba(183, 123, 69, 0.22);
+}
+
+.orb-2 {
+  width: 460px;
+  height: 460px;
+  bottom: -140px;
+  left: -100px;
+  background: rgba(112, 42, 18, 0.26);
 }
 
 .noise {
-  position:fixed;
-  inset:0;
-  z-index:50;
-  pointer-events:none;
-  opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.85'/%3E%3C/svg%3E");
 }
 
-/* LOADING */
+/* SCROLL PROGRESS */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0;
+  z-index: 120;
+  background: linear-gradient(90deg, var(--gold2), var(--gold-bright));
+  box-shadow: 0 0 12px rgba(231, 189, 130, 0.65);
+  transition: width 0.08s linear;
+}
 
+/* LOADER */
 .loader {
-  position:fixed;
-  inset:0;
-  z-index:200;
-  display:grid;
-  place-items:center;
-  background:#100704;
-  transition:.8s;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: #0d0503;
+  transition: opacity 0.75s var(--ease-out), visibility 0.75s var(--ease-out);
 }
 
 .loader.done {
-  opacity:0;
-  visibility:hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-inner {
+  text-align: center;
 }
 
 .loader img {
-  width:180px;
-  height:115px;
-  object-fit:contain;
+  width: 185px;
+  height: 115px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.7));
 }
 
 .loader p {
-  color:var(--gold);
-  text-align:center;
-  letter-spacing:5px;
-  font-size:10px;
-  margin-top:15px;
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 14px;
 }
 
 .loader-line {
-  width:180px;
-  height:2px;
-  background:#ffffff18;
-  margin:25px auto;
-  overflow:hidden;
+  width: 185px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 22px auto 0;
+  border-radius: 99px;
+  overflow: hidden;
 }
 
-.loader-line:after {
-  content:"";
-  display:block;
-  width:40%;
-  height:100%;
-  background:var(--gold);
-  animation:load 1s infinite;
+.loader-line::after {
+  content: "";
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold2), var(--gold-bright));
+  animation: loadSlide 1.05s var(--ease-out) infinite;
 }
 
-@keyframes load {
-  to {transform:translateX(350%)}
+@keyframes loadSlide {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(320%); }
 }
 
 /* NAVIGATION */
-
 nav {
-  position:fixed;
-  z-index:40;
-  top:0;
-  width:100%;
-  height:85px;
-  padding:0 7%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #ffffff12;
-  background:#100704b8;
-  backdrop-filter:blur(25px);
-  transition:.3s;
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 84px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 241, 223, 0.09);
+  background: rgba(13, 5, 3, 0.65);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  transition: height 0.35s var(--ease-out), background 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
 }
 
-nav.scrolled {height:70px;background:#100704ee}
+nav.scrolled {
+  height: 68px;
+  background: rgba(13, 5, 3, 0.9);
+  border-bottom-color: rgba(231, 189, 130, 0.18);
+}
 
 .logo {
-  width:150px;
-  height:75px;
-  object-fit:contain;
+  width: 148px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.logo:hover {
+  transform: scale(1.03);
 }
 
 .links {
-  display:flex;
-  align-items:center;
-  gap:32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
 }
 
 .links a {
-  font-size:10px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:#e8d8c4;
-  transition:.3s;
+  font-size: 10.5px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: #ebd9c3;
+  font-weight: 500;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
-.links a:hover {color:var(--gold)}
+.links a:hover {
+  color: var(--gold);
+}
 
 .nav-button {
-  padding:12px 20px;
-  border:1px solid #e7bd8270;
-  border-radius:30px;
-  color:var(--gold)!important;
+  padding: 11px 20px;
+  border: 1px solid rgba(231, 189, 130, 0.45);
+  border-radius: 999px;
+  background: rgba(231, 189, 130, 0.08);
+  color: var(--gold) !important;
+  font-weight: 600;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-button:hover {
+  background: rgba(231, 189, 130, 0.18);
+  border-color: var(--gold);
+  transform: translateY(-1px);
 }
 
 .menu {
-  display:none;
-  background:none;
-  border:0;
-  color:white;
-  font-size:26px;
-  cursor:pointer;
+  display: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  color: var(--cream);
+  font-size: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
 }
 
 /* HERO */
-
 .hero {
-  min-height:850px;
-  padding:135px 7% 75px;
-  display:grid;
-  grid-template-columns:.82fr 1.18fr;
-  align-items:center;
-  gap:20px;
+  min-height: 100svh;
+  padding: 124px 7% 70px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: center;
+  gap: 28px;
 }
 
 .eyebrow {
-  font-size:10px;
-  letter-spacing:5px;
-  color:var(--gold);
-  font-weight:700;
+  font-size: 10px;
+  letter-spacing: 4.5px;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .hero h1 {
-  font:600 clamp(65px,7.5vw,112px)/.96 'Playfair Display',serif;
-  letter-spacing:-4px;
-  margin:30px 0;
+  font: 600 clamp(62px, 7.2vw, 110px) / 0.96 'Playfair Display', serif;
+  letter-spacing: -3.5px;
+  margin: 26px 0;
 }
 
 .hero h1 em {
-  color:var(--gold);
-  font-weight:500;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 500;
 }
 
 .description {
-  max-width:420px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.95;
+  max-width: 430px;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.9;
 }
 
 .buttons {
-  display:flex;
-  flex-wrap:wrap;
-  gap:13px;
-  margin-top:35px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 34px;
 }
 
 .btn {
-  border:1px solid var(--gold);
-  border-radius:50px;
-  padding:17px 25px;
-  background:linear-gradient(120deg,#f1d1a1,#b77b45);
-  color:#251006;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  cursor:pointer;
-  transition:.3s;
-  box-shadow:0 10px 35px #b77b4530;
-}
-
-.btn:hover {
-  transform:translateY(-5px);
-  box-shadow:0 15px 45px #d49c5b55;
-}
-
-.btn.outline {
-  background:transparent;
-  color:var(--cream);
-  border-color:#ffffff40;
-  box-shadow:none;
-}
-
-.scroll-text {
-  margin-top:45px;
-  color:#a58b70;
-  font-size:9px;
-  letter-spacing:3px;
-}
-
-/* 3D CHOCOLATE STAGE */
-
-.stage {
-  position:relative;
-  height:660px;
-  min-width:0;
-}
-
-#chocolate {
-  width:100%;
-  height:100%;
-  display:block;
-  cursor:grab;
-  touch-action:none;
-  outline:none;
-}
-
-#chocolate:active {cursor:grabbing}
-
-.stage-glow {
-  position:absolute;
-  width:75%;
-  height:75%;
-  left:12%;
-  top:12%;
-  background:#a34d2350;
-  filter:blur(110px);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.stage-label {
-  position:absolute;
-  bottom:10px;
-  width:100%;
-  text-align:center;
-  font-size:9px;
-  letter-spacing:3px;
-  color:#cdb28f;
-  pointer-events:none;
-}
-
-.stage-label strong {color:var(--gold)}
-
-.stage-tip {
-  position:absolute;
-  top:18px;
-  right:15px;
-  font-size:9px;
-  letter-spacing:2px;
-  color:#ad967b;
-}
-
-/* SECTIONS */
-
-section.content {
-  padding:125px 8%;
-}
-
-.heading {
-  text-align:center;
-  max-width:700px;
-  margin:0 auto 65px;
-}
-
-.heading h2 {
-  font:600 clamp(45px,6vw,78px)/1.1 'Playfair Display',serif;
-  margin:20px 0;
-}
-
-.heading h2 em {color:var(--gold)}
-
-.heading p {
-  color:var(--muted);
-  line-height:1.9;
-  font-size:14px;
-}
-
-/* CARDS */
-
-.cards {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-}
-
-.card {
-  position:relative;
-  overflow:hidden;
-  min-height:280px;
-  padding:35px;
-  border:1px solid #e7bd8225;
-  border-radius:24px;
-  background:linear-gradient(145deg,#ffffff13,#ffffff03);
-  backdrop-filter:blur(25px);
-  box-shadow:inset 0 1px #ffffff15,0 20px 50px #0004;
-  transition:.45s;
-}
-
-.card:after {
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  right:-100px;
-  top:-110px;
-  background:#e7bd8230;
-  filter:blur(55px);
-}
-
-.card:hover {
-  transform:translateY(-12px);
-  border-color:#e7bd8290;
-}
-
-.card-number {
-  color:var(--gold);
-  font:italic 36px Georgia;
-}
-
-.card h3 {
-  font:600 28px 'Playfair Display',serif;
-  margin:25px 0 15px;
-}
-
-.card p {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.9;
-}
-
-/* INGREDIENTS */
-
-.ingredient-layout {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:65px;
-  align-items:center;
-}
-
-.ingredient-copy h2 {
-  font:600 clamp(45px,6vw,75px)/1.1 'Playfair Display',serif;
-  margin:25px 0;
-}
-
-.ingredient-copy h2 em {color:var(--gold)}
-
-.ingredient-copy p {
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.95;
-}
-
-.ingredient-visual {
-  height:440px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  overflow:hidden;
-  border:1px solid #e7bd8230;
-  border-radius:30px;
-  background:radial-gradient(circle,#75371d,#291006 60%,#140805);
-}
-
-.ingredient-visual span {
-  font-size:130px;
-  filter:drop-shadow(0 20px 35px #0008);
-  animation:float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  50% {transform:translateY(-15px) rotate(5deg)}
-}
-
-.facts {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-  margin:30px 0;
-}
-
-.fact {
-  padding:12px;
-  border-bottom:1px solid #ffffff20;
-  color:#e6d3bc;
-  font-size:12px;
-}
-
-.fact span {color:var(--gold);margin-right:8px}
-
-/* NUTRITION */
-
-.nutrients {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-}
-
-.nutrient {
-  text-align:center;
-  padding:25px 12px;
-  border:1px solid #ffffff20;
-  background:#ffffff08;
-  border-radius:17px;
-  transition:.3s;
-}
-
-.nutrient:hover {
-  transform:translateY(-6px);
-  border-color:var(--gold);
-}
-
-.nutrient b {
-  display:block;
-  color:var(--gold);
-  font:600 27px 'Playfair Display',serif;
-  margin-bottom:8px;
-}
-
-.nutrient small {
-  color:var(--muted);
-  font-size:10px;
-  letter-spacing:1px;
-}
-
-/* END */
-
-.final {
-  text-align:center;
-  padding:150px 7%;
-  background:radial-gradient(ellipse at center,#55281855,transparent 65%);
-}
-
-.final h2 {
-  font:600 clamp(50px,7vw,95px)/1.1 'Playfair Display',serif;
-  margin:25px 0;
-}
-
-.final h2 em {color:var(--gold)}
-
-.final p {
-  color:var(--muted);
-  line-height:1.9;
-}
-
-/* FOOTER */
-
-footer {
-  padding:75px 7% 35px;
-  text-align:center;
-  background:#0b0402;
-  border-top:1px solid #ffffff18;
-}
-
-.footer-logo {
-  width:180px;
-  height:110px;
-  object-fit:contain;
-}
-
-footer h3 {
-  color:var(--gold);
-  font:600 26px 'Playfair Display',serif;
-  letter-spacing:3px;
-}
-
-footer p {
-  color:#a99075;
-  font-size:11px;
-  margin-top:13px;
-  letter-spacing:1px;
-}
-
-.credit {
-  margin-top:35px;
-  padding-top:25px;
-  border-top:1px solid #ffffff18;
-  color:var(--gold);
-  font-size:11px;
-  letter-spacing:2px;
-}
-
-/* MODAL */
-
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:100;
-  padding:20px;
-  align-items:center;
-  justify-content:center;
-  background:#080301df;
-  backdrop-filter:blur(20px);
-}
-
-.modal.open {display:flex}
-
-.modal-box {
-  width:min(850px,100%);
-  max-height:85vh;
-  overflow:auto;
-  padding:40px;
-  border:1px solid #e7bd8270;
-  border-radius:25px;
-  background:linear-gradient(145deg,#482417,#160905);
-  animation:modalIn .4s ease;
-}
-
-@keyframes modalIn {
-  from {opacity:0;transform:translateY(25px)}
-  to {opacity:1;transform:translateY(0)}
-}
-
-.modal-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
-}
-
-.modal-header h2 {
-  font:600 36px 'Playfair Display',serif;
-}
-
-.close {
-  width:43px;
-  height:43px;
-  border-radius:50%;
-  background:#ffffff12;
-  border:1px solid #ffffff35;
-  color:white;
-  font-size:23px;
-  cursor:pointer;
-}
-
-.group {
-  padding:22px 0;
-  border-bottom:1px solid #ffffff20;
-}
-
-.group h3 {
-  font:600 23px 'Playfair Display',serif;
-  color:var(--gold);
-  margin-bottom:15px;
-}
-
-.tags {
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-}
-
-.tag {
-  padding:10px 14px;
-  border:1px solid #ffffff25;
-  border-radius:30px;
-  background:#ffffff0c;
-  color:#f1ddc3;
-  font-size:12px;
-}
-
-.note {
-  color:#bda68e;
-  font-size:11px;
-  line-height:1.8;
-  margin:25px 0;
-}
-
-/* ANIMATIONS */
-
-.reveal {
-  opacity:0;
-  transform:translateY(35px);
-  transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);
-}
-
-.reveal.visible {
-  opacity:1;
-  transform:translateY(0);
-}
-
-.delay1 {transition-delay:.12s}
-.delay2 {transition-delay:.24s}
-
-.progress {
-  position:fixed;
-  top:0;
-  left:0;
-  height:2px;
-  width:0;
-  z-index:100;
-  background:var(--gold);
-  box-shadow:0 0 10px var(--gold);
-}
-
-/* MOBILE */
-
-@media(max-width:900px) {
-  .hero {grid-template-columns:1fr;padding-top:130px}
-  .stage {height:550px}
-  .cards {grid-template-columns:1fr}
-  .ingredient-layout {grid-template-columns:1fr}
-  .nutrients {grid-template-columns:repeat(2,1fr)}
-}
-
-@media(max-width:600px) {
-  nav {height:72px;padding:0 5%}
-  .logo {width:115px}
-  .menu {display:block}
-  .links {
-    display:none;
-    position:absolute;
-    top:72px;
-    left:0;
-    width:100%;
-    padding:25px;
-    background:#160905;
-    flex-direction:column;
-    align-items:flex-start;
-  }
-  .links.open {display:flex}
-  .hero {padding:120px 6% 55px}
-  .hero h1 {font-size:65px}
-  .stage {height:390px}
-  section.content {padding:90px 6%}
-  .ingredient-visual {height:320px}
-  .modal-box {padding:23px}
-  .modal-header h2 {font-size:27px}
-}
-
-@media(prefers-reduced-motion:reduce) {
-  *,*:before,*:after {
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-    scroll-behavior:auto!important;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="background"></div>
-<div class="noise"></div>
-<div class="progress" id="progress"></div>
-
-<div class="loader" id="loader">
-  <div>
-    <img src="logo.png" alt="Sugarless Shenanigans">
-    <p>CHOCOLATE REIMAGINED</p>
-    <div class="loader-line"></div>
-  </div>
-</div>
-
-<nav id="navbar">
-  <a href="#top"><img src="logo.png" class="logo" alt="Sugarless Shenanigans"></a>
-  <button class="menu" id="menu">☰</button>
-  <div class="links" id="links">
-    <a href="#story">Our story</a>
-    <a href="#ingredients">Ingredients</a>
-    <a href="#nutrition">Nutrition</a>
-    <a href="#ingredients" class="nav-button" onclick="openIngredients()">Explore ↗</a>
-  </div>
-</nav>
-
-<main id="top">
-
-<section class="hero">
-
-  <div class="reveal">
-    <div class="eyebrow">A LITTLE MISCHIEF. A LOT OF CHOCOLATE.</div>
-
-    <h1>
-      Chocolate.<br>
-      Made <em>different.</em>
-    </h1>
-
-    <p class="description">
-      Introducing Sugarless Shenanigans.
-      A new chocolate concept combining rich cacao,
-      creamy textures, colourful superfoods and
-      thoughtfully selected ingredients.
-    </p>
-
-    <div class="buttons">
-      <button class="btn" onclick="openIngredients()">DISCOVER INGREDIENTS ↗</button>
-      <a href="#story" class="btn outline">OUR STORY</a>
-    </div>
-
-    <div class="scroll-text">↓ SCROLL TO DISCOVER THE EXPERIENCE</div>
-  </div>
-
-  <div class="stage reveal">
-    <div class="stage-glow"></div>
-    <div class="stage-tip">INTERACTIVE PRODUCT MODEL</div>
-    <canvas id="chocolate"></canvas>
-    <div class="stage-label">
-      <strong>360° CHOCOLATE EXPERIENCE</strong> · DRAG TO ROTATE
-    </div>
-  </div>
-
-</section>
-
-<section class="content" id="story">
-  <div class="heading reveal">
-    <div class="eyebrow">THE SHENANIGANS IDEA</div>
-    <h2>Not your <em>ordinary</em> chocolate.</h2>
-    <p>
-      We believe chocolate can be exciting, creative
-      and made with carefully considered ingredients.
-    </p>
-  </div>
-
-  <div class="cards">
-    <article class="card reveal">
-      <div class="card-number">01</div>
-      <h3>Rich cacao</h3>
-      <p>A deep chocolate foundation with cocoa butter and naturally high-flavanol cacao.</p>
-    </article>
-
-    <article class="card reveal delay1">
-      <div class="card-number">02</div>
-      <h3>Superfood creativity</h3>
-      <p>Seeds, berries, nuts and plant-based ingredients bring exciting textures.</p>
-    </article>
-
-    <article class="card reveal delay2">
-      <div class="card-number">03</div>
-      <h3>Thoughtful nutrition</h3>
-      <p>Exploring fibre, plant nutrients, vitamins and minerals in one chocolate concept.</p>
-    </article>
-  </div>
-</section>
-
-<section class="content" id="ingredients">
-  <div class="ingredient-layout">
-
-    <div class="ingredient-copy reveal">
-      <div class="eyebrow">THE INGREDIENT COLLECTION</div>
-      <h2>Good things.<br><em>Great chocolate.</em></h2>
-      <p>
-        Every ingredient has a reason to be considered.
-        From organic cocoa butter to chia seeds and
-        freeze-dried berries, our concept explores
-        a colourful collection of plant ingredients.
-      </p>
-
-      <div class="facts">
-        <div class="fact"><span>✦</span> Organic cacao</div>
-        <div class="fact"><span>✦</span> Chia seeds</div>
-        <div class="fact"><span>✦</span> Flaxseed</div>
-        <div class="fact"><span>✦</span> Hemp hearts</div>
-        <div class="fact"><span>✦</span> Blueberries</div>
-        <div class="fact"><span>✦</span> Natural vanilla</div>
-      </div>
-
-      <button class="btn" onclick="openIngredients()">VIEW ALL INGREDIENTS ↗</button>
-    </div>
-
-    <div class="ingredient-visual reveal delay1">
-      <span>🍫</span>
-    </div>
-
-  </div>
-</section>
-
-<section class="content" id="nutrition">
-  <div class="heading reveal">
-    <div class="eyebrow">THE NUTRITION CONCEPT</div>
-    <h2>More than <em>just cacao.</em></h2>
-    <p>
-      Exploring naturally occurring nutrients and
-      carefully formulated essential vitamins and minerals.
-    </p>
-  </div>
-
-  <div class="nutrients">
-    <div class="nutrient reveal"><b>A–K</b><small>VITAMINS</small></div>
-    <div class="nutrient reveal delay1"><b>10+</b><small>MINERALS</small></div>
-    <div class="nutrient reveal delay2"><b>OMEGA</b><small>FATTY ACIDS</small></div>
-    <div class="nutrient reveal"><b>FIBRE</b><small>PLANT FIBRE</small></div>
-    <div class="nutrient reveal delay1"><b>ALA</b><small>OMEGA-3</small></div>
-    <div class="nutrient reveal delay2"><b>PLANT</b><small>PROTEIN</small></div>
-    <div class="nutrient reveal"><b>COCOA</b><small>FLAVANOLS</small></div>
-    <div class="nutrient reveal delay1"><b>BERRY</b><small>POLYPHENOLS</small></div>
-  </div>
-</section>
-
-<section class="final">
-  <div class="eyebrow reveal">WELCOME TO THE SHENANIGANS</div>
-  <h2 class="reveal">A little less <em>ordinary.</em><br>A lot more interesting.</h2>
-  <p class="reveal">Chocolate with character.</p>
-  <br><br>
-  <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">BACK TO TOP ↑</button>
-</section>
-
-</main>
-
-<footer>
-  <img src="logo.png" class="footer-logo" alt="Sugarless Shenanigans">
-  <h3>SUGARLESS SHENANIGANS</h3>
-  <p>Chocolate with character.</p>
-  <p>Made for curious chocolate lovers.</p>
-  <div class="credit">
-    WEBSITE BY MOHAMMAD HASSAN
-    <p>© 2026 · ALL RIGHTS RESERVED</p>
-  </div>
-</footer>
-
-<!-- INGREDIENT WINDOW -->
-
-<div class="modal" id="modal" onclick="outsideClose(event)">
-  <div class="modal-box">
-
-    <div class="modal-header">
-      <h2>Inside the chocolate.</h2>
-      <button class="close" onclick="closeIngredients()">×</button>
-    </div>
-
-    <div class="group">
-      <h3>01 · Chocolate foundation</h3>
-      <div class="tags">
-        <span class="tag">Organic cocoa butter</span>
-        <span class="tag">High-flavanol cacao</span>
-        <span class="tag">Almond butter</span>
-        <span class="tag">Natural vanilla</span>
-        <span class="tag">Sunflower lecithin</span>
-        <span class="tag">Stevia</span>
-        <span class="tag">Sea salt</span>
-        <span class="tag">Cinnamon</span>
-      </div>
-    </div>
-
-    <div class="group">
-      <h3>02 · Seeds, nuts and fibre</h3>
-      <div class="tags">
-        <span class="tag">Flaxseed</span>
-        <span class="tag">Chia seeds</span>
-        <span class="tag">Hemp hearts</span>
-        <span class="tag">Pumpkin seeds</span>
-        <span class="tag">Pistachios</span>
-        <span class="tag">Inulin</span>
-        <span class="tag">Acacia fibre</span>
-        <span class="tag">Psyllium</span>
-      </div>
-    </div>
-
-    <div class="group">
-      <h3>03 · Berries and superfoods</h3>
-      <div class="tags">
-        <span class="tag">Blueberries</span>
-        <span class="tag">Strawberries</span>
-        <span class="tag">Raspberry powder</span>
-        <span class="tag">Beetroot</span>
-        <span class="tag">Matcha</span>
-        <span class="tag">Turmeric</span>
-        <span class="tag">Ginger</span>
-        <span class="tag">Pumpkin protein</span>
-      </div>
-    </div>
-
-    <div class="group">
-      <h3>04 · Vitamins</h3>
-      <div class="tags">
-        <span class="tag">Vitamin A</span>
-        <span class="tag">B1</span><span class="tag">B2</span>
-        <span class="tag">B3</span><span class="tag">B5</span>
-        <span class="tag">B6</span><span class="tag">B7</span>
-        <span class="tag">B9</span><span class="tag">B12</span>
-        <span class="tag">Vitamin C</span>
-        <span class="tag">Vitamin D</span>
-        <span class="tag">Vitamin E</span>
-        <span class="tag">Vitamin K1</span>
-      </div>
-    </div>
-
-    <div class="group">
-      <h3>05 · Essential minerals</h3>
-      <div class="tags">
-        <span class="tag">Magnesium</span>
-        <span class="tag">Calcium</span>
-        <span class="tag">Iron</span>
-        <span class="tag">Zinc</span>
-        <span class="tag">Potassium</span>
-        <span class="tag">Selenium</span>
-        <span class="tag">Iodine</span>
-        <span class="tag">Copper</span>
-        <span class="tag">Manganese</span>
-        <span class="tag">Phosphorus</span>
-      </div>
-    </div>
-
-    <div class="group">
-      <h3>06 · Naturally occurring nutrients</h3>
-      <div class="tags">
-        <span class="tag">Omega-3 ALA</span>
-        <span class="tag">Omega-6</span>
-        <span class="tag">Plant protein</span>
-        <span class="tag">Dietary fibre</span>
-        <span class="tag">Cocoa flavanols</span>
-        <span class="tag">Anthocyanins</span>
-        <span class="tag">Polyphenols</span>
-      </div>
-    </div>
-
-    <p class="note">
-      This is a proposed ingredient collection, not a verified final recipe.
-      Optional ingredients may be alternatives rather than ingredients
-      used together. Almonds and pistachios are allergens. Actual
-      nutritional quantities and product claims require professional
-      formulation and independent testing.
-    </p>
-
-    <button class="btn" onclick="closeIngredients()">CLOSE</button>
-  </div>
-</div>
-
-<script>
-/* LOADER */
-
-window.addEventListener('load',()=>{
-  setTimeout(()=>document.getElementById('loader').classList.add('done'),800);
-});
-
-/* NAVIGATION */
-
-const nav=document.getElementById('navbar');
-
-window.addEventListener('scroll',()=>{
-  nav.classList.toggle('scrolled',scrollY>50);
-
-  const max=document.documentElement.scrollHeight-innerHeight;
-  document.getElementById('progress').style.width=
-    (max>0?scrollY/max*100:0)+'%';
-});
-
-document.getElementById('menu').onclick=()=>{
-  document.getElementById('links').classList.toggle('open');
-};
-
-document.querySelectorAll('.links a').forEach(a=>{
-  a.addEventListener('click',()=>{
-    document.getElementById('links').classList.remove('open');
-  });
-});
-
-/* INGREDIENT WINDOW */
-
-function openIngredients(){
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-
-function closeIngredients(){
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-function outsideClose(e){
-  if(e.target.id==='modal')closeIngredients();
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeIngredients();
-});
-
-/* SCROLL ANIMATIONS */
-
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-},{threshold:.12});
-
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-</script>
-
-<!-- REAL-TIME 3D MODEL -->
-<script type="module">
-import * as THREE from 'three';
-
-import {OrbitControls} from
-'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-
-import {RoundedBoxGeometry} from
-'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js';
-
-import {RoomEnvironment} from
-'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js';
-
-/* SCENE */
-
-const canvas=document.getElementById('chocolate');
-
-const scene=new THREE.Scene();
-scene.background=null;
-
-const camera=new THREE.PerspectiveCamera(32,1,.1,100);
-camera.position.set(5,5,8);
-
-/* RENDERER */
-
-const renderer=new THREE.WebGLRenderer({
-  canvas,
-  alpha:true,
-  antialias:true,
-  powerPreference:'high-performance'
-});
-
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.15;
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-
-/* REALISTIC ENVIRONMENT REFLECTIONS */
-
-const pmrem=new THREE.PMREMGenerator(renderer);
-const environment=new RoomEnvironment();
-scene.environment=pmrem.fromScene(environment,.04).texture;
-environment.dispose();
-pmrem.dispose();
-
-/* CAMERA CONTROLS */
-
-const controls=new OrbitControls(camera,canvas);
-controls.enableDamping=true;
-controls.dampingFactor=.055;
-controls.enablePan=false;
-controls.minDistance=5;
-controls.maxDistance=12;
-controls.autoRotate=true;
-controls.autoRotateSpeed=.55;
-controls.target.set(0,0,0);
-
-/* CINEMATIC LIGHTS */
-
-scene.add(new THREE.HemisphereLight(0xffe8ca,0x170804,2));
-
-function areaLight(color,intensity,position){
-  const light=new THREE.DirectionalLight(color,intensity);
-  light.position.set(...position);
-  light.castShadow=true;
-  scene.add(light);
-  return light;
-}
-
-const key=areaLight(0xffd5a5,4,[4,8,6]);
-key.shadow.mapSize.set(2048,2048);
-key.shadow.camera.left=-8;
-key.shadow.camera.right=8;
-key.shadow.camera.top=8;
-key.shadow.camera.bottom=-8;
-
-areaLight(0xff9b55,3,[-6,4,3]);
-areaLight(0xffe4c5,5,[1,5,-7]);
-
-const front=new THREE.PointLight(0xffd6a9,45,25);
-front.position.set(0,3,8);
-scene.add(front);
-
-/* PROCEDURAL CHOCOLATE TEXTURE */
-
-function makeChocolateTexture(){
-  const c=document.createElement('canvas');
-  c.width=1024;
-  c.height=1024;
-
-  const ctx=c.getContext('2d');
-
-  ctx.fillStyle='#563020';
-  ctx.fillRect(0,0,1024,1024);
-
-  // Extremely subtle organic cocoa colour variation.
-  for(let i=0;i<45000;i++){
-    const x=Math.random()*1024;
-    const y=Math.random()*1024;
-    const r=Math.random()*2.5+.3;
-
-    ctx.fillStyle=Math.random()>.5?
-      'rgba(225,165,105,.035)':
-      'rgba(12,4,2,.055)';
-
-    ctx.beginPath();
-    ctx.arc(x,y,r,0,Math.PI*2);
-    ctx.fill();
-  }
-
-  // Tiny naturally uneven cocoa surface details.
-  for(let i=0;i<1800;i++){
-    const x=Math.random()*1024;
-    const y=Math.random()*1024;
-
-    ctx.fillStyle='rgba(20,8,3,.07)';
-    ctx.fillRect(x,y,Math.random()*5+.5,Math.random()*2+.3);
-  }
-
-  const texture=new THREE.CanvasTexture(c);
-  texture.colorSpace=THREE.SRGBColorSpace;
-  texture.wrapS=THREE.RepeatWrapping;
-  texture.wrapT=THREE.RepeatWrapping;
-  texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
-
-  return texture;
-}
-
-function makeBumpTexture(){
-  const c=document.createElement('canvas');
-  c.width=512;
-  c.height=512;
-  const ctx=c.getContext('2d');
-
-  ctx.fillStyle='#808080';
-  ctx.fillRect(0,0,512,512);
-
-  for(let i=0;i<35000;i++){
-    const shade=110+Math.random()*40;
-    ctx.fillStyle=`rgb(${shade},${shade},${shade})`;
-    ctx.fillRect(
-      Math.random()*512,
-      Math.random()*512,
-      Math.random()*2+.2,
-      Math.random()*2+.2
-    );
-  }
-
-  const t=new THREE.CanvasTexture(c);
-  t.wrapS=THREE.RepeatWrapping;
-  t.wrapT=THREE.RepeatWrapping;
-  return t;
-}
-
-const colourTexture=makeChocolateTexture();
-const bumpTexture=makeBumpTexture();
-
-/* CHOCOLATE MATERIAL */
-
-const chocolateMaterial=new THREE.MeshPhysicalMaterial({
-  color:0x492315,
-  map:colourTexture,
-  bumpMap:bumpTexture,
-  bumpScale:.018,
-  roughness:.21,
-  metalness:0,
-  clearcoat:1,
-  clearcoatRoughness:.085,
-  envMapIntensity:1.3
-});
-
-const darkMaterial=new THREE.MeshPhysicalMaterial({
-  color:0x30120b,
-  map:colourTexture,
-  bumpMap:bumpTexture,
-  bumpScale:.015,
-  roughness:.24,
-  clearcoat:1,
-  clearcoatRoughness:.11
-});
-
-/* CHOCOLATE BAR GROUP */
-
-const bar=new THREE.Group();
-scene.add(bar);
-
-/* MAIN SOLID CHOCOLATE BODY */
-
-const body=new THREE.Mesh(
-  new RoundedBoxGeometry(5.25,.48,3.5,10,.16),
-  darkMaterial
-);
-
-body.position.y=-.12;
-body.castShadow=true;
-body.receiveShadow=true;
-bar.add(body);
-
-/* TWELVE INDIVIDUAL RAISED CHOCOLATE PIECES */
-
-const segmentGeometry=new RoundedBoxGeometry(
-  1.245,.34,1.08,8,.115
-);
-
-const pieces=[];
-
-for(let x=0;x<4;x++){
-  for(let z=0;z<3;z++){
-
-    const piece=new THREE.Mesh(segmentGeometry,chocolateMaterial);
-
-    piece.position.set(
-      -1.965+x*1.31,
-      .28,
-      -.99+z*1.12
-    );
-
-    piece.castShadow=true;
-    piece.receiveShadow=true;
-
-    bar.add(piece);
-    pieces.push(piece);
-  }
-}
-
-/* DARK SEPARATION LINES */
-
-const seamMaterial=new THREE.MeshStandardMaterial({
-  color:0x210b06,
-  roughness:.4
-});
-
-for(let x=0;x<3;x++){
-  const seam=new THREE.Mesh(
-    new THREE.BoxGeometry(.045,.015,3.2),
-    seamMaterial
-  );
-
-  seam.position.set(-1.31+x*1.31,.452,0);
-  bar.add(seam);
-}
-
-for(let z=0;z<2;z++){
-  const seam=new THREE.Mesh(
-    new THREE.BoxGeometry(5,.015,.045),
-    seamMaterial
-  );
-
-  seam.position.set(0,.452,-.56+z*1.12);
-  bar.add(seam);
-}
-
-/* ROUNDED OUTER EDGES */
-
-const edge=new THREE.Mesh(
-  new RoundedBoxGeometry(5.35,.12,3.6,8,.1),
-  chocolateMaterial
-);
-
-edge.position.y=-.29;
-bar.add(edge);
-
-/* SS EMBLEM */
-
-const emblemCanvas=document.createElement('canvas');
-emblemCanvas.width=512;
-emblemCanvas.height=512;
-
-const ctx=emblemCanvas.getContext('2d');
-ctx.clearRect(0,0,512,512);
-ctx.textAlign='center';
-ctx.textBaseline='middle';
-ctx.font='bold 180px Georgia';
-ctx.fillStyle='#e9c28c';
-ctx.fillText('SS',256,256);
-
-const emblemTexture=new THREE.CanvasTexture(emblemCanvas);
-emblemTexture.colorSpace=THREE.SRGBColorSpace;
-
-const emblem=new THREE.Mesh(
-  new THREE.PlaneGeometry(.4,.4),
-  new THREE.MeshBasicMaterial({
-    map:emblemTexture,
-    transparent:true,
-    side:THREE.DoubleSide
-  })
-);
-
-emblem.rotation.x=-Math.PI/2;
-emblem.position.set(0,.46,0);
-bar.add(emblem);
-
-/* CHOCOLATE SIDE DETAILS */
-
-const sideMaterial=new THREE.MeshPhysicalMaterial({
-  color:0x38180e,
-  roughness:.19,
-  clearcoat:1
-});
-
-function addDrip(x,z,radius,length){
-  const geometry=new THREE.SphereGeometry(radius,32,24);
-  const drop=new THREE.Mesh(geometry,sideMaterial);
-
-  drop.scale.y=length;
-  drop.position.set(x,-.34-length*.2,z);
-  drop.castShadow=true;
-
-  bar.add(drop);
-}
-
-for(let i=0;i<10;i++){
-  addDrip(-2.4+i*.53,-1.72,.09+(i%3)*.025,1.7+(i%3)*.25);
-}
-
-/* FLOATING CHOCOLATE FLAKES */
-
-const flakes=new THREE.Group();
-scene.add(flakes);
-
-for(let i=0;i<16;i++){
-  const flake=new THREE.Mesh(
-    new THREE.DodecahedronGeometry(.045+Math.random()*.08,1),
-    chocolateMaterial
-  );
-
-  flake.position.set(
-    (Math.random()-.5)*9,
-    (Math.random()-.5)*5,
-    (Math.random()-.5)*5
-  );
-
-  flake.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
-  flake.userData.speed=.15+Math.random()*.3;
-
-  flakes.add(flake);
-}
-
-/* GOLDEN DUST */
-
-const dustCount=550;
-const dustPositions=new Float32Array(dustCount*3);
-
-for(let i=0;i<dustCount;i++){
-  dustPositions[i*3]=(Math.random()-.5)*15;
-  dustPositions[i*3+1]=(Math.random()-.5)*10;
-  dustPositions[i*3+2]=(Math.random()-.5)*12;
-}
-
-const dustGeometry=new THREE.BufferGeometry();
-dustGeometry.setAttribute(
-  'position',
-  new THREE.BufferAttribute(dustPositions,3)
-);
-
-const dustMaterial=new THREE.PointsMaterial({
-  color:0xe9bd7b,
-  size:.025,
-  transparent:true,
-  opacity:.65,
-  depthWrite:false
-});
-
-const dust=new THREE.Points(dustGeometry,dustMaterial);
-scene.add(dust);
-
-/* GROUND SHADOW */
-
-const ground=new THREE.Mesh(
-  new THREE.PlaneGeometry(200,200),
-  new THREE.ShadowMaterial({opacity:.22})
-);
-
-ground.rotation.x=-Math.PI/2;
-ground.position.y=-1.7;
-ground.receiveShadow=true;
-scene.add(ground);
-
-/* MODEL INITIAL POSITION */
-
-bar.rotation.x=-.22;
-bar.rotation.z=-.09;
-
-/* RESPONSIVE SIZE */
-
-function resize(){
-  const w=canvas.clientWidth;
-  const h=canvas.clientHeight;
-
-  if(!w||!h)return;
-
-  renderer.setSize(w,h,false);
-  camera.aspect=w/h;
-  camera.updateProjectionMatrix();
-}
-
-new ResizeObserver(resize).observe(canvas);
-resize();
-
-/* ANIMATION LOOP */
-
-const clock=new THREE.Clock();
-
-function animate(){
-  requestAnimationFrame(animate);
-
-  const t=clock.getElapsedTime();
-
-  // Floating chocolate.
-  bar.position.y=Math.sin(t*.8)*.10;
-
-  // Subtle organic movement.
-  bar.rotation.z=-.09+Math.sin(t*.4)*.025;
-
-  // Gentle movement of chocolate flakes.
-  flakes.children.forEach((flake,i)=>{
-    flake.rotation.x+=.003;
-    flake.rotation.y+=.004;
-    flake.position.y+=Math.sin(t+ i)*.0008;
-  });
-
-  // Atmospheric dust.
-  dust.rotation.y=t*.012;
-  dust.rotation.x=Math.sin(t*.15)*.025;
-
-  controls.update();
-  renderer.render(scene,camera);
-}
-
-animate();
-
-console.log('Sugarless Shenanigans 3D experience loaded.');
-</script>
-
-</body>
-</html>
+  display: inline
