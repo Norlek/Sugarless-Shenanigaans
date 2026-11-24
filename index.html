@@ -20,17 +20,19 @@
 
 <style>
 :root {
-  --bg: #0d0503;
-  --bg-elevated: #180905;
+  --bg: #0b0402;
   --brown: #261009;
   --gold: #e7bd82;
-  --gold-bright: #f6dca8;
+  --gold-bright: #f8e2b4;
   --gold2: #b77b45;
-  --cream: #fff1df;
-  --muted: #bfa78e;
-  --glass-bg: linear-gradient(145deg, rgba(255, 236, 210, 0.085), rgba(255, 200, 145, 0.018));
-  --glass-border: rgba(231, 189, 130, 0.22);
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --cream: #fff2e0;
+  --muted: #c2aa90;
+  --liquid-surface: rgba(255, 240, 218, 0.11);
+  --liquid-mid: rgba(231, 189, 130, 0.045);
+  --liquid-edge: rgba(255, 236, 205, 0.28);
+  --liquid-gold-edge: rgba(231, 189, 130, 0.42);
+  --spring: cubic-bezier(0.32, 1.32, 0.42, 1);
+  --smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *, *::before, *::after {
@@ -65,41 +67,75 @@ a {
   color: #160905;
 }
 
-/* AMBIENT BACKDROP */
+/* LIQUID CACAO AMBIENT LAYER */
 .background {
   position: fixed;
   inset: 0;
-  z-index: -3;
+  z-index: -4;
   background:
-    radial-gradient(circle at 74% 24%, rgba(138, 61, 27, 0.34), transparent 42%),
-    radial-gradient(circle at 18% 78%, rgba(92, 36, 18, 0.28), transparent 46%),
-    radial-gradient(circle at 50% 50%, rgba(42, 16, 8, 0.55), transparent 75%),
+    radial-gradient(circle at 76% 22%, rgba(156, 68, 28, 0.36), transparent 44%),
+    radial-gradient(circle at 18% 76%, rgba(102, 38, 17, 0.32), transparent 48%),
+    radial-gradient(circle at 52% 48%, rgba(46, 17, 8, 0.62), transparent 76%),
     var(--bg);
 }
 
-.ambient-orb {
+.liquid-blobs {
   position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
   pointer-events: none;
-  z-index: -2;
-  opacity: 0.45;
+  filter: blur(88px);
 }
 
-.orb-1 {
+.blob {
+  position: absolute;
+  border-radius: 44% 56% 62% 38% / 46% 39% 61% 54%;
+  opacity: 0.45;
+  will-change: transform, border-radius;
+}
+
+.blob-a {
+  width: 560px;
+  height: 560px;
+  top: -120px;
+  right: -90px;
+  background: radial-gradient(circle at 35% 35%, rgba(231, 189, 130, 0.24), rgba(145, 58, 22, 0.22) 65%, transparent 80%);
+  animation: morphA 16s ease-in-out infinite alternate;
+}
+
+.blob-b {
   width: 520px;
   height: 520px;
-  top: -120px;
-  right: -80px;
-  background: rgba(183, 123, 69, 0.22);
+  bottom: -150px;
+  left: -120px;
+  background: radial-gradient(circle at 60% 40%, rgba(183, 123, 69, 0.2), rgba(92, 33, 14, 0.28) 68%, transparent 82%);
+  animation: morphB 20s ease-in-out infinite alternate;
 }
 
-.orb-2 {
-  width: 460px;
-  height: 460px;
-  bottom: -140px;
-  left: -100px;
-  background: rgba(112, 42, 18, 0.26);
+.blob-c {
+  width: 380px;
+  height: 380px;
+  top: 42%;
+  left: 46%;
+  background: radial-gradient(circle, rgba(168, 76, 32, 0.14), transparent 72%);
+  animation: morphC 14s ease-in-out infinite alternate;
+}
+
+@keyframes morphA {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 44% 56% 62% 38% / 46% 39% 61% 54%; }
+  50% { transform: translate(-45px, 35px) scale(1.08) rotate(24deg); border-radius: 58% 42% 38% 62% / 53% 61% 39% 47%; }
+  100% { transform: translate(20px, -25px) scale(0.96) rotate(-18deg); border-radius: 41% 59% 53% 47% / 38% 54% 46% 62%; }
+}
+
+@keyframes morphB {
+  0% { transform: translate(0, 0) scale(1); border-radius: 52% 48% 41% 59% / 45% 57% 43% 55%; }
+  100% { transform: translate(55px, -40px) scale(1.12); border-radius: 39% 61% 57% 43% / 60% 40% 58% 42%; }
+}
+
+@keyframes morphC {
+  0% { transform: translate(-50%, -50%) scale(0.92); }
+  100% { transform: translate(-44%, -56%) scale(1.14); }
 }
 
 .noise {
@@ -111,16 +147,17 @@ a {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.85'/%3E%3C/svg%3E");
 }
 
-/* SCROLL PROGRESS */
+/* LIQUID SCROLL PROGRESS */
 .progress {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2.5px;
+  height: 3px;
   width: 0;
   z-index: 120;
-  background: linear-gradient(90deg, var(--gold2), var(--gold-bright));
-  box-shadow: 0 0 12px rgba(231, 189, 130, 0.65);
+  background: linear-gradient(90deg, var(--gold2), var(--gold-bright), #ffffff);
+  box-shadow: 0 0 16px rgba(231, 189, 130, 0.75);
+  border-radius: 0 99px 99px 0;
   transition: width 0.08s linear;
 }
 
@@ -131,25 +168,32 @@ a {
   z-index: 200;
   display: grid;
   place-items: center;
-  background: #0d0503;
-  transition: opacity 0.75s var(--ease-out), visibility 0.75s var(--ease-out);
+  background: #0b0402;
+  transition: opacity 0.8s var(--smooth), visibility 0.8s var(--smooth), transform 0.8s var(--smooth);
 }
 
 .loader.done {
   opacity: 0;
   visibility: hidden;
+  transform: scale(1.03);
   pointer-events: none;
 }
 
 .loader-inner {
   text-align: center;
+  padding: 36px 44px;
+  border-radius: 32px;
+  background: linear-gradient(155deg, rgba(255, 240, 218, 0.07), rgba(255, 200, 145, 0.015));
+  border: 1px solid rgba(231, 189, 130, 0.24);
+  backdrop-filter: blur(28px);
+  box-shadow: inset 0 1px 0 rgba(255, 245, 228, 0.22), 0 30px 70px rgba(0, 0, 0, 0.65);
 }
 
 .loader img {
   width: 185px;
-  height: 115px;
+  height: 112px;
   object-fit: contain;
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.75));
 }
 
 .loader p {
@@ -157,13 +201,13 @@ a {
   text-align: center;
   letter-spacing: 5px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 14px;
 }
 
 .loader-line {
   width: 185px;
-  height: 2px;
+  height: 2.5px;
   background: rgba(255, 255, 255, 0.12);
   margin: 22px auto 0;
   border-radius: 99px;
@@ -173,116 +217,144 @@ a {
 .loader-line::after {
   content: "";
   display: block;
-  width: 45%;
+  width: 48%;
   height: 100%;
   background: linear-gradient(90deg, var(--gold2), var(--gold-bright));
-  animation: loadSlide 1.05s var(--ease-out) infinite;
+  animation: loadSlide 1.05s var(--smooth) infinite;
 }
 
 @keyframes loadSlide {
   0% { transform: translateX(-110%); }
-  100% { transform: translateX(320%); }
+  100% { transform: translateX(310%); }
 }
 
-/* NAVIGATION */
+/* iOS 26 LIQUID GLASS FLOATING NAVIGATION */
 nav {
   position: fixed;
   z-index: 60;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 84px;
-  padding: 0 7%;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1240px, 90%);
+  height: 70px;
+  padding: 0 26px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 241, 223, 0.09);
-  background: rgba(13, 5, 3, 0.65);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  transition: height 0.35s var(--ease-out), background 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+  border: 1px solid var(--liquid-edge);
+  background: linear-gradient(155deg, rgba(36, 16, 9, 0.68), rgba(16, 7, 4, 0.56));
+  backdrop-filter: blur(28px) saturate(165%) contrast(106%);
+  -webkit-backdrop-filter: blur(28px) saturate(165%) contrast(106%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 230, 0.24),
+    inset 0 -1px 0 rgba(231, 189, 130, 0.14),
+    0 18px 46px rgba(0, 0, 0, 0.45);
+  transition:
+    top 0.4s var(--spring),
+    height 0.4s var(--spring),
+    width 0.4s var(--spring),
+    background 0.35s var(--smooth),
+    border-color 0.35s var(--smooth),
+    box-shadow 0.35s var(--smooth);
 }
 
 nav.scrolled {
-  height: 68px;
-  background: rgba(13, 5, 3, 0.9);
-  border-bottom-color: rgba(231, 189, 130, 0.18);
+  top: 10px;
+  height: 60px;
+  width: min(1160px, 92%);
+  background: linear-gradient(155deg, rgba(28, 12, 7, 0.84), rgba(13, 5, 3, 0.78));
+  border-color: var(--liquid-gold-edge);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 230, 0.28),
+    0 22px 54px rgba(0, 0, 0, 0.62);
 }
 
 .logo {
-  width: 148px;
-  height: 64px;
+  width: 136px;
+  height: 54px;
   object-fit: contain;
   display: block;
-  transition: transform 0.3s var(--ease-out);
+  transition: transform 0.35s var(--spring);
 }
 
 .logo:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
 }
 
 .links a {
+  position: relative;
   font-size: 10.5px;
-  letter-spacing: 2.2px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: #ebd9c3;
+  color: #f2e2cd;
   font-weight: 500;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color 0.25s ease, transform 0.3s var(--spring);
 }
 
-.links a:hover {
-  color: var(--gold);
+.links a:not(.nav-button):hover {
+  color: var(--gold-bright);
+  transform: translateY(-1px);
 }
 
 .nav-button {
-  padding: 11px 20px;
-  border: 1px solid rgba(231, 189, 130, 0.45);
+  padding: 10px 18px;
+  border: 1px solid rgba(231, 189, 130, 0.48);
   border-radius: 999px;
-  background: rgba(231, 189, 130, 0.08);
-  color: var(--gold) !important;
-  font-weight: 600;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  background: linear-gradient(145deg, rgba(231, 189, 130, 0.2), rgba(183, 123, 69, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 245, 228, 0.28);
+  color: var(--gold-bright) !important;
+  font-weight: 700;
+  transition: transform 0.35s var(--spring), background 0.25s ease, border-color 0.25s ease;
 }
 
 .nav-button:hover {
-  background: rgba(231, 189, 130, 0.18);
-  border-color: var(--gold);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(145deg, rgba(231, 189, 130, 0.32), rgba(183, 123, 69, 0.14));
+  border-color: var(--gold-bright);
 }
 
 .menu {
   display: none;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  width: 44px;
-  height: 44px;
+  background: rgba(255, 245, 230, 0.08);
+  border: 1px solid rgba(255, 245, 230, 0.2);
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
   color: var(--cream);
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s var(--spring), background 0.25s ease;
+}
+
+.menu:active {
+  transform: scale(0.92);
 }
 
 /* HERO */
 .hero {
   min-height: 100svh;
-  padding: 124px 7% 70px;
+  padding: 128px 7% 72px;
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 0.84fr 1.16fr;
   align-items: center;
   gap: 28px;
 }
 
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 10px;
-  letter-spacing: 4.5px;
+  letter-spacing: 4.2px;
   color: var(--gold);
   font-weight: 700;
   text-transform: uppercase;
@@ -301,7 +373,7 @@ nav.scrolled {
 }
 
 .description {
-  max-width: 430px;
+  max-width: 435px;
   color: var(--muted);
   font-size: 14.5px;
   line-height: 1.9;
@@ -315,42 +387,72 @@ nav.scrolled {
 }
 
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid var(--gold);
+  border: 1px solid rgba(248, 226, 180, 0.72);
   border-radius: 999px;
   padding: 16px 26px;
-  background: linear-gradient(125deg, var(--gold-bright), var(--gold) 48%, var(--gold2));
+  background: linear-gradient(130deg, var(--gold-bright), var(--gold) 48%, var(--gold2));
   color: #210d05;
   font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 1.6px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.32s var(--ease-out), box-shadow 0.32s var(--ease-out), filter 0.32s ease;
-  box-shadow: 0 12px 32px rgba(183, 123, 69, 0.28);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.65),
+    0 14px 34px rgba(183, 123, 69, 0.34);
+  transition: transform 0.4s var(--spring), box-shadow 0.35s var(--smooth), filter 0.3s ease;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.45) 50%, transparent 80%);
+  transform: translateX(-130%);
+  transition: transform 0.75s var(--smooth);
+}
+
+.btn:hover::before {
+  transform: translateX(130%);
 }
 
 .btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 42px rgba(231, 189, 130, 0.42);
-  filter: brightness(1.04);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.8),
+    0 20px 44px rgba(231, 189, 130, 0.48);
+}
+
+.btn:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 .btn.outline {
-  background: rgba(255, 241, 223, 0.03);
-  backdrop-filter: blur(14px);
+  background: linear-gradient(155deg, rgba(255, 242, 224, 0.09), rgba(255, 242, 224, 0.02));
+  backdrop-filter: blur(20px);
   color: var(--cream);
-  border-color: rgba(255, 241, 223, 0.25);
-  box-shadow: none;
+  border-color: rgba(255, 242, 224, 0.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 230, 0.22),
+    0 10px 26px rgba(0, 0, 0, 0.3);
+}
+
+.btn.outline::before {
+  display: none;
 }
 
 .btn.outline:hover {
   border-color: rgba(231, 189, 130, 0.65);
-  background: rgba(231, 189, 130, 0.08);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(155deg, rgba(231, 189, 130, 0.16), rgba(255, 242, 224, 0.04));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 230, 0.3),
+    0 16px 34px rgba(0, 0, 0, 0.42);
 }
 
 .scroll-text {
@@ -359,18 +461,38 @@ nav.scrolled {
   font-size: 9.5px;
   letter-spacing: 3.2px;
   text-transform: uppercase;
+  animation: pulseHint 2.8s ease-in-out infinite;
 }
 
-/* 3D CHOCOLATE STAGE */
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.65; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(4px); }
+}
+
+/* LIQUID GLASS 3D STAGE */
 .stage {
   position: relative;
-  height: 670px;
+  height: 675px;
   min-width: 0;
-  border-radius: 32px;
-  border: 1px solid rgba(231, 189, 130, 0.16);
-  background: radial-gradient(circle at 50% 48%, rgba(92, 41, 19, 0.24), rgba(16, 7, 4, 0.35) 70%);
-  backdrop-filter: blur(8px);
+  border-radius: 36px;
+  border: 1px solid var(--liquid-edge);
+  background:
+    radial-gradient(circle at 52% 46%, rgba(120, 52, 22, 0.28), rgba(16, 7, 4, 0.44) 72%);
+  backdrop-filter: blur(18px) saturate(145%);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 246, 232, 0.24),
+    inset 0 -1px 0 rgba(231, 189, 130, 0.16),
+    0 32px 80px rgba(0, 0, 0, 0.58);
   overflow: hidden;
+  transition: border-color 0.4s var(--smooth), box-shadow 0.4s var(--smooth);
+}
+
+.stage:hover {
+  border-color: var(--liquid-gold-edge);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 246, 232, 0.3),
+    0 36px 90px rgba(0, 0, 0, 0.68);
 }
 
 #chocolate {
@@ -388,52 +510,55 @@ nav.scrolled {
 
 .stage-glow {
   position: absolute;
-  width: 72%;
-  height: 72%;
-  left: 14%;
-  top: 14%;
-  background: radial-gradient(circle, rgba(196, 98, 42, 0.28), transparent 70%);
-  filter: blur(85px);
+  width: 74%;
+  height: 74%;
+  left: 13%;
+  top: 13%;
+  background: radial-gradient(circle, rgba(212, 108, 46, 0.32), transparent 72%);
+  filter: blur(88px);
   pointer-events: none;
 }
 
 .stage-tip {
   position: absolute;
   top: 18px;
-  left: 22px;
-  padding: 7px 13px;
+  left: 20px;
+  padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(16, 7, 4, 0.62);
-  border: 1px solid rgba(231, 189, 130, 0.2);
-  backdrop-filter: blur(12px);
+  background: linear-gradient(155deg, rgba(255, 242, 224, 0.12), rgba(20, 8, 4, 0.56));
+  border: 1px solid rgba(255, 242, 224, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.25);
+  backdrop-filter: blur(18px);
   font-size: 9px;
+  font-weight: 600;
   letter-spacing: 2.2px;
-  color: #d6bc9c;
+  color: #ead3b6;
   pointer-events: none;
 }
 
 .reset-view-btn {
   position: absolute;
   top: 18px;
-  right: 22px;
-  padding: 7px 14px;
+  right: 20px;
+  padding: 8px 15px;
   border-radius: 999px;
-  background: rgba(16, 7, 4, 0.68);
-  border: 1px solid rgba(231, 189, 130, 0.28);
-  backdrop-filter: blur(12px);
-  color: var(--gold);
+  background: linear-gradient(155deg, rgba(231, 189, 130, 0.18), rgba(20, 8, 4, 0.62));
+  border: 1px solid rgba(231, 189, 130, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.25);
+  backdrop-filter: blur(18px);
+  color: var(--gold-bright);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: transform 0.35s var(--spring), background 0.25s ease, border-color 0.25s ease;
 }
 
 .reset-view-btn:hover {
-  background: rgba(231, 189, 130, 0.16);
-  border-color: var(--gold);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.03);
+  background: linear-gradient(155deg, rgba(231, 189, 130, 0.28), rgba(20, 8, 4, 0.62));
+  border-color: var(--gold-bright);
 }
 
 .stage-label {
@@ -443,7 +568,7 @@ nav.scrolled {
   text-align: center;
   font-size: 9.5px;
   letter-spacing: 3px;
-  color: #cbb08e;
+  color: #d4ba99;
   pointer-events: none;
   text-transform: uppercase;
 }
@@ -479,47 +604,68 @@ section.content {
   font-size: 14.5px;
 }
 
-/* GLASS CARDS */
+/* iOS 26 LIQUID GLASS CARDS */
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 26px;
 }
 
 .card {
   position: relative;
   overflow: hidden;
-  min-height: 290px;
+  min-height: 295px;
   padding: 36px;
-  border: 1px solid var(--glass-border);
-  border-radius: 26px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(26px) saturate(140%);
-  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  border: 1px solid var(--liquid-edge);
+  border-radius: 32px;
+  background: linear-gradient(155deg, var(--liquid-surface), var(--liquid-mid) 55%, rgba(255, 240, 218, 0.02));
+  backdrop-filter: blur(30px) saturate(165%);
+  -webkit-backdrop-filter: blur(30px) saturate(165%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 241, 223, 0.14),
-    0 24px 54px rgba(0, 0, 0, 0.42);
-  transition: transform 0.45s var(--ease-out), border-color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+    inset 0 1.5px 0 rgba(255, 246, 232, 0.25),
+    inset 0 -1px 0 rgba(231, 189, 130, 0.12),
+    0 24px 60px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.5s var(--spring),
+    border-color 0.35s var(--smooth),
+    box-shadow 0.4s var(--smooth);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 246, 232, 0.14), transparent);
+  transform: skewX(-22deg);
+  transition: left 0.8s var(--smooth);
+  pointer-events: none;
+}
+
+.card:hover::before {
+  left: 135%;
 }
 
 .card::after {
   content: "";
   position: absolute;
-  width: 200px;
-  height: 200px;
-  right: -90px;
-  top: -100px;
-  background: radial-gradient(circle, rgba(231, 189, 130, 0.22), transparent 70%);
-  filter: blur(36px);
+  width: 220px;
+  height: 220px;
+  right: -85px;
+  top: -95px;
+  background: radial-gradient(circle, rgba(231, 189, 130, 0.25), transparent 72%);
+  filter: blur(34px);
   pointer-events: none;
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  border-color: rgba(231, 189, 130, 0.52);
+  transform: translateY(-12px) scale(1.015);
+  border-color: var(--liquid-gold-edge);
   box-shadow:
-    inset 0 1px 0 rgba(255, 241, 223, 0.22),
-    0 28px 64px rgba(0, 0, 0, 0.55);
+    inset 0 1.5px 0 rgba(255, 248, 236, 0.34),
+    0 32px 72px rgba(0, 0, 0, 0.6);
 }
 
 .card-number {
@@ -568,24 +714,25 @@ section.content {
   place-items: center;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(231, 189, 130, 0.26);
-  border-radius: 32px;
+  border: 1px solid var(--liquid-edge);
+  border-radius: 36px;
   background:
-    radial-gradient(circle at 50% 45%, rgba(138, 63, 28, 0.55), rgba(38, 15, 7, 0.88) 62%, rgba(16, 7, 4, 0.98) 100%);
+    radial-gradient(circle at 50% 42%, rgba(162, 72, 30, 0.48), rgba(44, 17, 8, 0.84) 60%, rgba(16, 7, 4, 0.96) 100%);
+  backdrop-filter: blur(24px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 241, 223, 0.14),
-    0 28px 65px rgba(0, 0, 0, 0.5);
+    inset 0 1.5px 0 rgba(255, 246, 232, 0.24),
+    0 28px 68px rgba(0, 0, 0, 0.55);
 }
 
 .ingredient-visual span {
   font-size: 132px;
   filter: drop-shadow(0 24px 38px rgba(0, 0, 0, 0.65));
-  animation: floatBadge 4.4s ease-in-out infinite;
+  animation: floatBadge 4.4s var(--spring) infinite;
 }
 
 @keyframes floatBadge {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-14px) rotate(4deg); }
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-16px) rotate(5deg) scale(1.04); }
 }
 
 .facts {
@@ -596,12 +743,18 @@ section.content {
 }
 
 .fact {
-  padding: 12px 4px;
-  border-bottom: 1px solid rgba(255, 241, 223, 0.14);
+  padding: 12px 6px;
+  border-bottom: 1px solid rgba(255, 242, 224, 0.14);
   color: #ebd8c0;
   font-size: 12.5px;
   display: flex;
   align-items: center;
+  transition: transform 0.3s var(--spring), color 0.25s ease;
+}
+
+.fact:hover {
+  transform: translateX(4px);
+  color: var(--gold-bright);
 }
 
 .fact span {
@@ -609,7 +762,7 @@ section.content {
   margin-right: 10px;
 }
 
-/* NUTRITION */
+/* LIQUID NUTRITION PILLS */
 .nutrients {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -619,16 +772,19 @@ section.content {
 .nutrient {
   text-align: center;
   padding: 28px 14px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+  border: 1px solid var(--liquid-edge);
+  background: linear-gradient(155deg, var(--liquid-surface), var(--liquid-mid));
+  backdrop-filter: blur(24px) saturate(155%);
+  -webkit-backdrop-filter: blur(24px) saturate(155%);
+  box-shadow: inset 0 1px 0 rgba(255, 246, 232, 0.22), 0 14px 36px rgba(0, 0, 0, 0.35);
+  border-radius: 26px;
+  transition: transform 0.45s var(--spring), border-color 0.3s var(--smooth), box-shadow 0.3s var(--smooth);
 }
 
 .nutrient:hover {
-  transform: translateY(-6px);
-  border-color: var(--gold);
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--liquid-gold-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.32), 0 22px 44px rgba(0, 0, 0, 0.5);
 }
 
 .nutrient b {
@@ -649,7 +805,7 @@ section.content {
 .final {
   text-align: center;
   padding: 145px 7%;
-  background: radial-gradient(ellipse at center, rgba(110, 48, 22, 0.28), transparent 66%);
+  background: radial-gradient(ellipse at center, rgba(126, 54, 24, 0.3), transparent 66%);
 }
 
 .final h2 {
@@ -672,8 +828,8 @@ section.content {
 footer {
   padding: 76px 7% 38px;
   text-align: center;
-  background: #090302;
-  border-top: 1px solid rgba(255, 241, 223, 0.1);
+  background: linear-gradient(180deg, rgba(15, 6, 3, 0.92), #070201);
+  border-top: 1px solid rgba(255, 242, 224, 0.12);
 }
 
 .footer-logo {
@@ -700,7 +856,7 @@ footer p {
 .credit {
   margin-top: 36px;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 241, 223, 0.1);
+  border-top: 1px solid rgba(255, 242, 224, 0.1);
   color: var(--gold);
   font-size: 11px;
   font-weight: 600;
@@ -713,7 +869,7 @@ footer p {
   font-weight: 400;
 }
 
-/* GLASS INGREDIENT MODAL */
+/* iOS 26 LIQUID GLASS MODAL */
 .modal {
   display: none;
   position: fixed;
@@ -722,9 +878,9 @@ footer p {
   padding: 20px;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 2, 1, 0.78);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  background: rgba(6, 2, 1, 0.72);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
 }
 
 .modal.open {
@@ -736,18 +892,20 @@ footer p {
   max-height: 85vh;
   overflow: auto;
   padding: 40px;
-  border: 1px solid rgba(231, 189, 130, 0.36);
-  border-radius: 28px;
-  background: linear-gradient(155deg, rgba(64, 30, 17, 0.92), rgba(18, 7, 4, 0.96));
+  border: 1px solid rgba(231, 189, 130, 0.42);
+  border-radius: 34px;
+  background: linear-gradient(155deg, rgba(72, 33, 18, 0.88), rgba(16, 6, 3, 0.95));
+  backdrop-filter: blur(34px) saturate(165%);
+  -webkit-backdrop-filter: blur(34px) saturate(165%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 241, 223, 0.16),
-    0 32px 80px rgba(0, 0, 0, 0.75);
-  animation: modalIn 0.38s var(--ease-out);
+    inset 0 1.5px 0 rgba(255, 248, 236, 0.28),
+    0 36px 90px rgba(0, 0, 0, 0.78);
+  animation: modalSpringIn 0.48s var(--spring);
 }
 
-@keyframes modalIn {
-  from { opacity: 0; transform: translateY(22px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes modalSpringIn {
+  0% { opacity: 0; transform: translateY(28px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-header {
@@ -765,24 +923,24 @@ footer p {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 245, 230, 0.08);
+  border: 1px solid rgba(255, 245, 230, 0.22);
   color: var(--cream);
   font-size: 22px;
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.25s ease, transform 0.35s var(--spring);
 }
 
 .close:hover {
-  background: rgba(231, 189, 130, 0.2);
-  transform: rotate(90deg);
+  background: rgba(231, 189, 130, 0.22);
+  transform: rotate(90deg) scale(1.06);
 }
 
 .group {
   padding: 22px 0;
-  border-bottom: 1px solid rgba(255, 241, 223, 0.12);
+  border-bottom: 1px solid rgba(255, 242, 224, 0.12);
 }
 
 .group h3 {
@@ -798,12 +956,19 @@ footer p {
 }
 
 .tag {
-  padding: 9px 14px;
-  border: 1px solid rgba(255, 241, 223, 0.14);
+  padding: 9px 15px;
+  border: 1px solid rgba(255, 242, 224, 0.16);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #f2dfc6;
+  background: linear-gradient(155deg, rgba(255, 242, 224, 0.08), rgba(255, 242, 224, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 248, 236, 0.16);
+  color: #f4e2ca;
   font-size: 12px;
+  transition: transform 0.3s var(--spring), border-color 0.25s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  border-color: rgba(231, 189, 130, 0.45);
 }
 
 .note {
@@ -813,16 +978,16 @@ footer p {
   margin: 24px 0;
 }
 
-/* REVEAL TRANSITIONS */
+/* SPRING REVEAL TRANSITIONS */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: translateY(34px) scale(0.985);
+  transition: opacity 0.9s var(--smooth), transform 0.95s var(--spring);
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .delay1 { transition-delay: 0.1s; }
@@ -836,7 +1001,7 @@ footer p {
     min-height: auto;
   }
   .stage {
-    height: 540px;
+    height: 550px;
   }
   .cards {
     grid-template-columns: 1fr;
@@ -851,12 +1016,19 @@ footer p {
 
 @media (max-width: 640px) {
   nav {
-    height: 72px;
-    padding: 0 5%;
+    top: 10px;
+    height: 62px;
+    width: 94%;
+    padding: 0 16px;
+  }
+  nav.scrolled {
+    top: 8px;
+    height: 56px;
+    width: 95%;
   }
   .logo {
-    width: 116px;
-    height: 52px;
+    width: 112px;
+    height: 46px;
   }
   .menu {
     display: inline-flex;
@@ -867,27 +1039,28 @@ footer p {
     top: 72px;
     left: 0;
     width: 100%;
-    padding: 24px 6%;
-    background: rgba(18, 7, 4, 0.96);
-    backdrop-filter: blur(24px);
-    border-bottom: 1px solid rgba(231, 189, 130, 0.2);
+    padding: 24px;
+    border-radius: 26px;
+    background: rgba(20, 8, 4, 0.94);
+    backdrop-filter: blur(28px);
+    border: 1px solid rgba(231, 189, 130, 0.28);
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 18px;
   }
   .links.open {
     display: flex;
   }
   .hero {
-    padding: 112px 6% 52px;
+    padding: 108px 6% 52px;
   }
   .hero h1 {
     font-size: 58px;
     letter-spacing: -2px;
   }
   .stage {
-    height: 410px;
-    border-radius: 24px;
+    height: 420px;
+    border-radius: 26px;
   }
   .stage-tip, .reset-view-btn {
     top: 12px;
@@ -912,7 +1085,7 @@ footer p {
   }
   .modal-box {
     padding: 24px;
-    border-radius: 22px;
+    border-radius: 24px;
   }
   .modal-header h2 {
     font-size: 27px;
@@ -933,8 +1106,11 @@ footer p {
 <body>
 
 <div class="background"></div>
-<div class="ambient-orb orb-1"></div>
-<div class="ambient-orb orb-2"></div>
+<div class="liquid-blobs" aria-hidden="true">
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="blob blob-c"></div>
+</div>
 <div class="noise"></div>
 <div class="progress" id="progress"></div>
 
@@ -986,9 +1162,9 @@ footer p {
 
   <div class="stage reveal">
     <div class="stage-glow"></div>
-    <div class="stage-tip">PROCEDURAL PBR CHOCOLATE</div>
+    <div class="stage-tip">LIQUID PBR CHOCOLATE</div>
     <button class="reset-view-btn" id="resetView" type="button">Reset Angle</button>
-    <canvas id="chocolate" aria-label="Interactive 3D chocolate bar with raised squares, floating pieces, and animated droplets"></canvas>
+    <canvas id="chocolate" aria-label="Interactive 3D chocolate bar with raised squares, liquid chocolate ribbons, droplets, and floating pieces"></canvas>
     <div class="stage-label">
       <strong>360° Chocolate Experience</strong> · Drag to Rotate · Scroll to Zoom
     </div>
@@ -1266,14 +1442,14 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
-<!-- REAL-TIME PROCEDURAL 3D CHOCOLATE SHOWCASE -->
+<!-- ULTRA-REALISTIC LIQUID 3D CHOCOLATE ENGINE -->
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-/* DETERMINISTIC SEEDED PRNG FOR CONSISTENT TEXTURES & SCULPTING */
+/* DETERMINISTIC SEEDED PRNG */
 function mulberry32(seed) {
   let a = seed >>> 0;
   return function () {
@@ -1285,7 +1461,7 @@ function mulberry32(seed) {
   };
 }
 
-const rng = mulberry32(20260519);
+const rng = mulberry32(20261124);
 
 /* SCENE & CAMERA */
 const canvas = document.getElementById('chocolate');
@@ -1293,7 +1469,8 @@ const scene = new THREE.Scene();
 scene.background = null;
 
 const camera = new THREE.PerspectiveCamera(31, 1, 0.1, 100);
-const DEFAULT_CAM_POS = new THREE.Vector3(4.7, 4.4, 7.6);
+const DEFAULT_CAM_POS = new THREE.Vector3(4.65, 4.35, 7.5);
+const DEFAULT_TARGET = new THREE.Vector3(0, -0.08, 0);
 camera.position.copy(DEFAULT_CAM_POS);
 
 /* RENDERER */
@@ -1306,42 +1483,42 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.12;
+renderer.toneMappingExposure = 1.15;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 /* STUDIO ENVIRONMENT REFLECTIONS */
 const pmrem = new THREE.PMREMGenerator(renderer);
 const roomEnv = new RoomEnvironment();
-const envRT = pmrem.fromScene(roomEnv, 0.035);
+const envRT = pmrem.fromScene(roomEnv, 0.032);
 scene.environment = envRT.texture;
-scene.environmentIntensity = 0.92;
+scene.environmentIntensity = 1.05;
 roomEnv.dispose();
 pmrem.dispose();
 
 /* ORBIT CONTROLS */
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.dampingFactor = 0.055;
+controls.dampingFactor = 0.05;
 controls.enablePan = false;
-controls.minDistance = 4.6;
-controls.maxDistance = 12.5;
+controls.minDistance = 4.4;
+controls.maxDistance = 12.2;
 controls.autoRotate = true;
-controls.autoRotateSpeed = 0.5;
-controls.target.set(0, -0.05, 0);
+controls.autoRotateSpeed = 0.55;
+controls.target.copy(DEFAULT_TARGET);
 
 document.getElementById('resetView').addEventListener('click', () => {
   camera.position.copy(DEFAULT_CAM_POS);
-  controls.target.set(0, -0.05, 0);
+  controls.target.copy(DEFAULT_TARGET);
   bar.rotation.set(-0.24, 0, -0.08);
   controls.update();
 });
 
 /* CINEMATIC STUDIO LIGHTING */
-const hemiLight = new THREE.HemisphereLight(0xffe9cc, 0x180703, 1.45);
+const hemiLight = new THREE.HemisphereLight(0xffeacc, 0x180703, 1.55);
 scene.add(hemiLight);
 
-const keyLight = new THREE.DirectionalLight(0xffd7a8, 3.8);
+const keyLight = new THREE.DirectionalLight(0xffd8a8, 4.1);
 keyLight.position.set(4.5, 8.2, 5.8);
 keyLight.castShadow = true;
 keyLight.shadow.mapSize.set(2048, 2048);
@@ -1355,82 +1532,77 @@ keyLight.shadow.bias = -0.0004;
 keyLight.shadow.normalBias = 0.025;
 scene.add(keyLight);
 
-const warmRim = new THREE.DirectionalLight(0xff9a52, 2.5);
+const warmRim = new THREE.DirectionalLight(0xff9c54, 2.75);
 warmRim.position.set(-6.5, 3.8, 3.2);
 scene.add(warmRim);
 
-const backSpecLight = new THREE.DirectionalLight(0xffe2be, 4.2);
-backSpecLight.position.set(0.8, 4.5, -7.2);
+const backSpecLight = new THREE.DirectionalLight(0xffe5c4, 4.6);
+backSpecLight.position.set(0.8, 4.6, -7.2);
 scene.add(backSpecLight);
 
-const frontFill = new THREE.PointLight(0xffd5a6, 26, 20, 1.6);
+const frontFill = new THREE.PointLight(0xffd7ab, 28, 20, 1.6);
 frontFill.position.set(0.5, 2.4, 6.8);
 scene.add(frontFill);
 
-/* PROCEDURAL PBR TEXTURES (ALBEDO + ROUGHNESS + BUMP) */
+/* PROCEDURAL PBR TEXTURES */
 function createChocolateMaps() {
   const size = 1024;
 
-  // 1. Albedo / Color Map: rich tempered dark cacao with subtle cocoa butter marbling
   const colorCanvas = document.createElement('canvas');
   colorCanvas.width = size;
   colorCanvas.height = size;
   const cCtx = colorCanvas.getContext('2d');
 
   const grad = cCtx.createLinearGradient(0, 0, size, size);
-  grad.addColorStop(0, '#492214');
+  grad.addColorStop(0, '#4a2214');
   grad.addColorStop(0.5, '#3b190e');
-  grad.addColorStop(1, '#4d2516');
+  grad.addColorStop(1, '#4f2616');
   cCtx.fillStyle = grad;
   cCtx.fillRect(0, 0, size, size);
 
-  // Subtle tempering streaks
-  for (let i = 0; i < 160; i++) {
+  for (let i = 0; i < 180; i++) {
     const x = rng() * size;
     const y = rng() * size;
-    const w = 90 + rng() * 260;
-    const h = 14 + rng() * 42;
+    const w = 90 + rng() * 270;
+    const h = 14 + rng() * 44;
     cCtx.save();
     cCtx.translate(x, y);
     cCtx.rotate((rng() - 0.5) * 0.45);
     cCtx.fillStyle = rng() > 0.5
-      ? 'rgba(138, 76, 42, 0.032)'
-      : 'rgba(15, 5, 2, 0.045)';
+      ? 'rgba(148, 82, 46, 0.035)'
+      : 'rgba(14, 4, 2, 0.048)';
     cCtx.beginPath();
     cCtx.ellipse(0, 0, w, h, 0, 0, Math.PI * 2);
     cCtx.fill();
     cCtx.restore();
   }
 
-  // Fine organic micro-speckles
-  for (let i = 0; i < 48000; i++) {
+  for (let i = 0; i < 52000; i++) {
     const x = rng() * size;
     const y = rng() * size;
     const r = 0.4 + rng() * 1.9;
     cCtx.fillStyle = rng() > 0.52
-      ? 'rgba(218, 158, 102, 0.028)'
-      : 'rgba(10, 3, 1, 0.045)';
+      ? 'rgba(224, 165, 108, 0.03)'
+      : 'rgba(10, 3, 1, 0.046)';
     cCtx.fillRect(x, y, r, r);
   }
 
-  // 2. Roughness Map: glossy tempered peaks vs slightly softer micro-pockets
   const roughCanvas = document.createElement('canvas');
   roughCanvas.width = size;
   roughCanvas.height = size;
   const rCtx = roughCanvas.getContext('2d');
-  rCtx.fillStyle = 'rgb(52, 52, 52)'; // ~0.20 base roughness
+  rCtx.fillStyle = 'rgb(46, 46, 46)';
   rCtx.fillRect(0, 0, size, size);
 
-  for (let i = 0; i < 36000; i++) {
+  for (let i = 0; i < 38000; i++) {
     const x = rng() * size;
     const y = rng() * size;
     const s = 0.8 + rng() * 2.8;
-    const v = Math.floor(34 + rng() * 48); // glossy 0.13 to 0.31 range
+    const v = Math.floor(28 + rng() * 44);
     rCtx.fillStyle = `rgb(${v},${v},${v})`;
     rCtx.fillRect(x, y, s, s);
   }
 
-  // 3. Bump Map: crisp molded surface grain & subtle imperfections
   const bumpCanvas = document.createElement('canvas');
   bumpCanvas.width = 512;
   bumpCanvas.height = 512;
@@ -1438,24 +1610,13 @@ function createChocolateMaps() {
   bCtx.fillStyle = 'rgb(128, 128, 128)';
   bCtx.fillRect(0, 0, 512, 512);
 
-  for (let i = 0; i < 32000; i++) {
+  for (let i = 0; i < 34000; i++) {
     const x = rng() * 512;
     const y = rng() * 512;
     const s = 0.6 + rng() * 2.0;
-    const v = Math.floor(106 + rng() * 46);
+    const v = Math.floor(105 + rng() * 48);
     bCtx.fillStyle = `rgb(${v},${v},${v})`;
     bCtx.fillRect(x, y, s, s);
-  }
-
-  // Subtle tiny air-pocket / mold pinpricks
-  for (let i = 0; i < 95; i++) {
-    const x = rng() * 512;
-    const y = rng() * 512;
-    const rad = 0.7 + rng() * 1.4;
-    bCtx.fillStyle = 'rgba(72, 72, 72, 0.55)';
-    bCtx.beginPath();
-    bCtx.arc(x, y, rad, 0, Math.PI * 2);
-    bCtx.fill();
   }
 
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -1481,19 +1642,19 @@ function createChocolateMaps() {
 
 const { colorMap, roughnessMap, bumpMap } = createChocolateMaps();
 
-/* PHYSICAL CHOCOLATE MATERIALS */
+/* TEMPERED & LIQUID CHOCOLATE MATERIALS */
 const squareMaterial = new THREE.MeshPhysicalMaterial({
-  color: 0x4b2214,
+  color: 0x4c2314,
   map: colorMap,
   roughnessMap,
   bumpMap,
-  bumpScale: 0.014,
-  roughness: 0.24,
+  bumpScale: 0.013,
+  roughness: 0.21,
   metalness: 0.0,
   clearcoat: 1.0,
-  clearcoatRoughness: 0.075,
-  reflectivity: 0.9,
-  envMapIntensity: 1.35
+  clearcoatRoughness: 0.065,
+  reflectivity: 0.95,
+  envMapIntensity: 1.45
 });
 
 const baseMaterial = new THREE.MeshPhysicalMaterial({
@@ -1501,30 +1662,29 @@ const baseMaterial = new THREE.MeshPhysicalMaterial({
   map: colorMap,
   roughnessMap,
   bumpMap,
-  bumpScale: 0.016,
-  roughness: 0.28,
+  bumpScale: 0.015,
+  roughness: 0.25,
   metalness: 0.0,
-  clearcoat: 0.88,
-  clearcoatRoughness: 0.11,
-  envMapIntensity: 1.15
+  clearcoat: 0.92,
+  clearcoatRoughness: 0.095,
+  envMapIntensity: 1.25
 });
 
 const liquidChocMaterial = new THREE.MeshPhysicalMaterial({
-  color: 0x3c180c,
-  roughness: 0.11,
+  color: 0x3f190c,
+  roughness: 0.085,
   metalness: 0.0,
   clearcoat: 1.0,
-  clearcoatRoughness: 0.035,
-  ior: 1.52,
+  clearcoatRoughness: 0.025,
+  ior: 1.54,
   reflectivity: 1.0,
-  envMapIntensity: 1.55
+  envMapIntensity: 1.7
 });
 
-/* BUILD SCULPTED CHOCOLATE BAR (4x3 RAISED SQUARES + ROUNDED BASE) */
+/* SCULPTED 12-SQUARE CHOCOLATE BAR */
 const bar = new THREE.Group();
 scene.add(bar);
 
-// Outer rounded slab base
 const baseSlab = new THREE.Mesh(
   new RoundedBoxGeometry(5.42, 0.36, 3.72, 8, 0.14),
   baseMaterial
@@ -1534,12 +1694,11 @@ baseSlab.castShadow = true;
 baseSlab.receiveShadow = true;
 bar.add(baseSlab);
 
-// Recess channel bed under the squares
 const grooveBed = new THREE.Mesh(
   new RoundedBoxGeometry(5.16, 0.08, 3.46, 6, 0.03),
   new THREE.MeshStandardMaterial({
     color: 0x220c06,
-    roughness: 0.42,
+    roughness: 0.4,
     metalness: 0.02
   })
 );
@@ -1547,7 +1706,6 @@ grooveBed.position.y = 0.04;
 grooveBed.receiveShadow = true;
 bar.add(grooveBed);
 
-// Helper to create a slightly pillowed, rounded-edge chocolate square
 function makePillowedSquareGeometry(w, h, d) {
   const geom = new RoundedBoxGeometry(w, h, d, 9, 0.095);
   const pos = geom.attributes.position;
@@ -1576,7 +1734,6 @@ const spacingX = 1.27;
 const spacingZ = 1.12;
 const squareGeom = makePillowedSquareGeometry(1.16, 0.32, 1.01);
 
-// Subtle gold-champagne embossed mark on center squares
 function makeMarkTexture(text) {
   const c = document.createElement('canvas');
   c.width = 256;
@@ -1588,12 +1745,10 @@ function makeMarkTexture(text) {
   ctx.textBaseline = 'middle';
   ctx.font = '600 84px "Playfair Display", Georgia, serif';
 
-  // Subtle dark shadow for embossed depth
   ctx.fillStyle = 'rgba(14, 4, 2, 0.65)';
   ctx.fillText(text, 130, 132);
 
-  // Warm gold-cacao highlight
-  ctx.fillStyle = 'rgba(235, 194, 136, 0.42)';
+  ctx.fillStyle = 'rgba(238, 198, 140, 0.46)';
   ctx.fillText(text, 128, 128);
 
   const tex = new THREE.CanvasTexture(c);
@@ -1627,7 +1782,6 @@ for (let ix = 0; ix < cols; ix++) {
     bar.add(sq);
     squares.push(sq);
 
-    // Add subtle embossed monogram on the two central squares
     if ((ix === 1 || ix === 2) && iz === 1) {
       const decal = new THREE.Mesh(new THREE.PlaneGeometry(0.46, 0.46), markMat);
       decal.rotation.x = -Math.PI / 2;
@@ -1637,7 +1791,6 @@ for (let ix = 0; ix < cols; ix++) {
   }
 }
 
-/* RIM BEADS / MELTED EDGE COLLARS AROUND BAR */
 const rimCollar = new THREE.Mesh(
   new RoundedBoxGeometry(5.46, 0.11, 3.76, 8, 0.055),
   liquidChocMaterial
@@ -1646,8 +1799,71 @@ rimCollar.position.y = -0.27;
 rimCollar.castShadow = true;
 bar.add(rimCollar);
 
+/* FLOWING LIQUID CHOCOLATE RIBBONS AROUND THE BAR */
+const liquidRibbons = [];
+const ribbonSpecs = [
+  {
+    points: [
+      new THREE.Vector3(-2.45, 0.34, 1.55),
+      new THREE.Vector3(-2.68, 0.05, 1.85),
+      new THREE.Vector3(-2.73, -0.26, 1.87),
+      new THREE.Vector3(-2.65, -0.58, 1.88)
+    ],
+    radius: 0.075,
+    phase: 0.0,
+    speed: 1.35
+  },
+  {
+    points: [
+      new THREE.Vector3(-0.95, 0.36, 1.58),
+      new THREE.Vector3(-1.02, 0.06, 1.86),
+      new THREE.Vector3(-1.05, -0.28, 1.88),
+      new THREE.Vector3(-0.98, -0.66, 1.89)
+    ],
+    radius: 0.088,
+    phase: 1.4,
+    speed: 1.15
+  },
+  {
+    points: [
+      new THREE.Vector3(1.18, 0.36, 1.56),
+      new THREE.Vector3(1.24, 0.04, 1.86),
+      new THREE.Vector3(1.27, -0.28, 1.88),
+      new THREE.Vector3(1.22, -0.72, 1.89)
+    ],
+    radius: 0.092,
+    phase: 2.7,
+    speed: 1.25
+  },
+  {
+    points: [
+      new THREE.Vector3(2.48, 0.34, 1.48),
+      new THREE.Vector3(2.71, 0.04, 1.78),
+      new THREE.Vector3(2.74, -0.27, 1.85),
+      new THREE.Vector3(2.68, -0.55, 1.86)
+    ],
+    radius: 0.072,
+    phase: 4.1,
+    speed: 1.45
+  }
+];
+
+ribbonSpecs.forEach(spec => {
+  const curve = new THREE.CatmullRomCurve3(spec.points);
+  const geom = new THREE.TubeGeometry(curve, 32, spec.radius, 18, false);
+  const mesh = new THREE.Mesh(geom, liquidChocMaterial);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData = {
+    baseScaleY: 1,
+    phase: spec.phase,
+    speed: spec.speed
+  };
+  bar.add(mesh);
+  liquidRibbons.push(mesh);
+});
+
 /* ANIMATED MELTING CHOCOLATE DROPLETS */
-// Each droplet cycles through: growing at rim -> stretching -> detaching & falling
 function createDropletGeometry() {
   const pts = [
     new THREE.Vector2(0.001, 0.14),
@@ -1664,16 +1880,15 @@ function createDropletGeometry() {
 
 const dropletGeom = createDropletGeometry();
 const droplets = [];
-const dropletCount = 16;
+const dropletCount = 18;
 
 for (let i = 0; i < dropletCount; i++) {
   const drop = new THREE.Mesh(dropletGeom, liquidChocMaterial);
   drop.castShadow = true;
 
-  // Distribute along the front/side edges of the chocolate bar
-  const alongFront = i < 11;
+  const alongFront = i < 12;
   const edgeX = alongFront
-    ? -2.35 + ((i * 0.47) % 4.7)
+    ? -2.35 + ((i * 0.43) % 4.7)
     : (i % 2 === 0 ? -2.71 : 2.71);
   const edgeZ = alongFront
     ? 1.85 + (rng() - 0.5) * 0.06
@@ -1692,7 +1907,7 @@ for (let i = 0; i < dropletCount; i++) {
   droplets.push(drop);
 }
 
-/* FLOATING CHOCOLATE CHUNKS & SHARDS */
+/* FLOATING SCULPTED CHOCOLATE CHUNKS */
 function makeSculptedChunkGeometry(radius, detail = 1, seedFactor = 0.24) {
   const geom = new THREE.DodecahedronGeometry(radius, detail);
   const pos = geom.attributes.position;
@@ -1740,7 +1955,7 @@ chunkConfigs.forEach((cfg, idx) => {
 });
 
 /* WARM GOLDEN CACAO DUST PARTICLES */
-const dustCount = 480;
+const dustCount = 520;
 const dustPositions = new Float32Array(dustCount * 3);
 for (let i = 0; i < dustCount; i++) {
   dustPositions[i * 3] = (rng() - 0.5) * 14;
@@ -1752,10 +1967,10 @@ const dustGeom = new THREE.BufferGeometry();
 dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
 
 const dustMat = new THREE.PointsMaterial({
-  color: 0xecc284,
-  size: 0.024,
+  color: 0xf1c789,
+  size: 0.025,
   transparent: true,
-  opacity: 0.55,
+  opacity: 0.6,
   depthWrite: false
 });
 
@@ -1765,7 +1980,7 @@ scene.add(dust);
 /* SOFT SHADOW CATCHER PLANE */
 const shadowPlane = new THREE.Mesh(
   new THREE.PlaneGeometry(40, 40),
-  new THREE.ShadowMaterial({ opacity: 0.26 })
+  new THREE.ShadowMaterial({ opacity: 0.28 })
 );
 shadowPlane.rotation.x = -Math.PI / 2;
 shadowPlane.position.y = -2.15;
@@ -1796,25 +2011,28 @@ function animate() {
   requestAnimationFrame(animate);
   const t = clock.getElapsedTime();
 
-  // Gentle levitation and organic tilt of the chocolate bar
-  bar.position.y = Math.sin(t * 0.85) * 0.09;
-  bar.rotation.z = -0.08 + Math.sin(t * 0.45) * 0.022;
-  bar.rotation.x = -0.24 + Math.cos(t * 0.38) * 0.016;
+  bar.position.y = Math.sin(t * 0.85) * 0.095;
+  bar.rotation.z = -0.08 + Math.sin(t * 0.45) * 0.024;
+  bar.rotation.x = -0.24 + Math.cos(t * 0.38) * 0.018;
 
-  // Micro-breathing on individual raised squares
   for (let i = 0; i < squares.length; i++) {
     const sq = squares[i];
-    sq.position.y = sq.userData.baseY + Math.sin(t * 1.1 + sq.userData.phase) * 0.004;
+    sq.position.y = sq.userData.baseY + Math.sin(t * 1.15 + sq.userData.phase) * 0.005;
   }
 
-  // Animated melting droplets: swell -> elongate -> detach & fall -> reset
+  for (let i = 0; i < liquidRibbons.length; i++) {
+    const rb = liquidRibbons[i];
+    const u = rb.userData;
+    const swell = 1 + Math.sin(t * u.speed + u.phase) * 0.06;
+    rb.scale.set(1 + Math.sin(t * u.speed + u.phase) * 0.03, swell, 1);
+  }
+
   for (let i = 0; i < droplets.length; i++) {
     const d = droplets[i];
     const u = d.userData;
     const cycle = (t * u.cycleSpeed + u.phase) % 1;
 
     if (cycle < 0.55) {
-      // Growing & stretching at the chocolate edge
       const p = cycle / 0.55;
       const ease = p * p;
       const s = u.baseScale * (0.25 + ease * 0.85);
@@ -1822,7 +2040,6 @@ function animate() {
       d.scale.set(s, s * (1 + ease * 0.55), s);
       d.visible = true;
     } else if (cycle < 0.92) {
-      // Detached falling droplet under gravity
       const f = (cycle - 0.55) / 0.37;
       const fallDist = 0.07 + f * f * 1.65;
       const stretch = 1.35 + f * 0.55;
@@ -1835,7 +2052,6 @@ function animate() {
     }
   }
 
-  // Floating chocolate pieces drifting & rotating
   floatingChunks.children.forEach(chunk => {
     const u = chunk.userData;
     chunk.rotation.x += u.rotSpeed[0];
@@ -1844,8 +2060,7 @@ function animate() {
     chunk.position.y = u.baseY + Math.sin(t * u.bobFreq + u.phase) * u.bobAmp;
   });
 
-  // Subtle ambient dust motion
-  dust.rotation.y = t * 0.014;
+  dust.rotation.y = t * 0.015;
   dust.rotation.x = Math.sin(t * 0.16) * 0.025;
 
   controls.update();
@@ -1853,7 +2068,7 @@ function animate() {
 }
 
 animate();
-console.log('Sugarless Shenanigans procedural 3D showcase active.');
+console.log('Sugarless Shenanigans liquid 3D showcase active.');
 </script>
 
 </body>
